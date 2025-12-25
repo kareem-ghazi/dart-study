@@ -67,45 +67,43 @@ Liftoff!
 
 ---
 
-## Assignment 4: Simple Math (Function & Return)
+## Assignment 4: Recursive Factorial (Advanced)
 
 **Objective:**
-Practice defining functions with return values.
-*(الهدف: التدرب على تعريف الدوال ذات القيم المرجعة.)*
+Understand functions, recursion, and stack depth.
+*(الهدف: فهم الدوال، العودية، وعمق المكدس.)*
 
 **Instructions:**
-1. Define a function `add(int a, int b)` that returns the sum of two integers.
-2. Define a function `subtract(int a, int b)` that returns the difference.
-3. In `main`, call both functions with numbers 10 and 5.
-4. Print the results.
+1. Create a function `factorial(int n)` that returns an `int`.
+2. If `n` is 0 or 1, return 1 (Base case).
+3. Otherwise, return `n * factorial(n - 1)`.
+4. In `main`, calculate and print the factorial of 5.
+5. **Bonus:** Add a check to throw an exception if `n` is negative.
 
 **Expected Output:**
 ```
-Sum: 15
-Difference: 5
+Factorial of 5 is 120
 ```
 
 ---
 
-## Assignment 5: String Manipulation (Methods)
+## Assignment 5: Shape Polymorphism (Advanced)
 
 **Objective:**
-Practice using built-in String methods.
-*(الهدف: التدرب على استخدام دوال النصوص المدمجة.)*
+Practice classes, inheritance, method overriding, and lists.
+*(الهدف: التدرب على الفئات، الوراثة، تجاوز الدوال، والقوائم.)*
 
 **Instructions:**
-1. Create a string variable `message` with the value " Hello Dart! ".
-2. Print the string in uppercase.
-3. Print the string in lowercase.
-4. Print the string with whitespace removed (trimmed).
-5. Check if the string contains "Dart" and print the boolean result.
+1. Create an abstract class `Shape` with a method `double area()`.
+2. Create a class `Circle` extending `Shape` with a property `radius`. Override `area` (`pi * r * r`).
+3. Create a class `Rectangle` extending `Shape` with `width` and `height`. Override `area`.
+4. In `main`, create a `List<Shape>` containing one Circle and one Rectangle.
+5. Iterate through the list and print the area of each shape.
 
 **Expected Output:**
 ```
- HELLO DART! 
- hello dart! 
-Hello Dart!
-Contains 'Dart': true
+Area of Circle: 78.5...
+Area of Rectangle: 200.0
 ```
 
 ---
@@ -192,32 +190,60 @@ void main() async {
 }
 ```
 
-### Solution 4: Simple Math
+### Solution 4: Recursive Factorial
 
 ```dart
-int add(int a, int b) {
-  return a + b;
-}
-
-int subtract(int a, int b) {
-  return a - b;
+int factorial(int n) {
+  if (n < 0) throw Exception('Negative numbers not allowed');
+  if (n <= 1) return 1;
+  return n * factorial(n - 1);
 }
 
 void main() {
-  print('Sum: ${add(10, 5)}');
-  print('Difference: ${subtract(10, 5)}');
+  try {
+    int n = 5;
+    print('Factorial of $n is ${factorial(n)}');
+  } catch (e) {
+    print(e);
+  }
 }
 ```
 
-### Solution 5: String Manipulation
+### Solution 5: Shape Polymorphism
 
 ```dart
-void main() {
-  String message = " Hello Dart! ";
+import 'dart:math';
+
+abstract class Shape {
+  double area();
+}
+
+class Circle extends Shape {
+  final double radius;
+  Circle(this.radius);
   
-  print(message.toUpperCase());
-  print(message.toLowerCase());
-  print(message.trim());
-  print('Contains \'Dart\': ${message.contains('Dart')}');
+  @override
+  double area() => pi * radius * radius;
+}
+
+class Rectangle extends Shape {
+  final double width;
+  final double height;
+  Rectangle(this.width, this.height);
+  
+  @override
+  double area() => width * height;
+}
+
+void main() {
+  List<Shape> shapes = [
+    Circle(5),
+    Rectangle(10, 20)
+  ];
+
+  for (var shape in shapes) {
+    // runtimeType prints the class name
+    print('Area of ${shape.runtimeType}: ${shape.area()}');
+  }
 }
 ```

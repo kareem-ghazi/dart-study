@@ -76,50 +76,75 @@ Error: type 'Animal' is not a subtype of type 'Dog' in type cast
 
 ---
 
-## Assignment 4: Dynamic vs Object
+## Assignment 4: Type Promotion with Flow Analysis (Advanced)
 
 **Objective:**
-Understand the difference between `dynamic` and `Object`.
-*(الهدف: فهم الفرق بين `dynamic` و `Object`.)*
+Understand how Dart promotes `Object` or `dynamic` to specific types using control flow.
+*(الهدف: فهم كيفية ترقية Dart لـ `Object` أو `dynamic` إلى أنواع محددة باستخدام التحكم في التدفق.)*
 
 **Instructions:**
-1. Declare a variable `dynamic d = 'hello'`.
-2. Declare a variable `Object o = 'hello'`.
-3. Try to print `d.length` (valid).
-4. Try to print `o.length` (invalid, comment it out).
-5. Print `d` and `o`.
+1. Write a function `processData(Object? data)`.
+2. Use an `if` statement to check `if (data is List<int>)`.
+3. Inside the `if`, Dart promotes `data` to `List<int>`. Iterate through it and calculate the sum.
+4. Add an `else if` to check `if (data is String)`. Print "String length: ${data.length}".
+5. Call the function with `[1, 2, 3]` and `"Hello"`.
 
 **Expected Output:**
 ```
-5
-hello
-hello
+Sum: 6
+String length: 5
 ```
 
 ---
 
-## Assignment 5: Type Casting
+## Assignment 5: Runtime Failure Safety (Advanced)
 
 **Objective:**
-Practice manual type casting using `as`.
-*(الهدف: التدرب على التحويل اليدوي للأنواع باستخدام `as`.)*
+Observe how `cast()` works and catch runtime errors when types don't match.
+*(الهدف: ملاحظة كيفية عمل `cast()` والتقاط أخطاء وقت التشغيل عند عدم تطابق الأنواع.)*
 
 **Instructions:**
-1. Declare `Object x = "Dart"`.
-2. Cast `x` to `String` and store it in `String s`.
-3. Print `s.toUpperCase()`.
+1. Create a `List<dynamic>` named `mixed` containing `[1, 2, "oops", 4]`.
+2. Create a reference `List<int>` named `numbers` by calling `mixed.cast<int>()`. (Note: This doesn't fail *yet*).
+3. Loop through `numbers` and print each item inside a `try-catch` block.
+4. Observe that accessing the "oops" string as an `int` causes a crash (TypeError).
 
 **Expected Output:**
 ```
-DART
+1
+2
+Error: type 'String' is not a subtype of type 'int' in type cast
 ```
 
 ---
 
 ## Solutions
 
+### Solution 1: Type Safety Fix
+
 ```dart
-// --- Assignment 2 Classes ---
+void printLengths(List<String> list) {
+  for (var item in list) print(item.length);
+}
+
+void main() {
+  List<dynamic> mixedList = ['Hello', 100, true];
+  
+  // Create a safe List<String>
+  List<String> stringList = [];
+  for (var item in mixedList) {
+    if (item is String) {
+      stringList.add(item);
+    }
+  }
+  
+  printLengths(stringList);
+}
+```
+
+### Solution 2: Safe Method Overriding
+
+```dart
 class Vehicle {
   Vehicle getBrand() => Vehicle();
   void refuel(Vehicle v) {}
@@ -138,7 +163,16 @@ class Car extends Vehicle {
   }
 }
 
-// --- Assignment 3 Classes ---
+void main() {
+  Car myCar = Car();
+  myCar.getBrand();
+  myCar.refuel("Gas"); // Object accepted
+}
+```
+
+### Solution 3: Covariant Implementation
+
+```dart
 class Animal {}
 class Dog extends Animal {}
 
@@ -155,36 +189,7 @@ class DogTrainer extends Trainer {
   }
 }
 
-// --- Assignment 1 Helper ---
-void printLengths(List<String> list) {
-  for (var item in list) print(item.length);
-}
-
 void main() {
-  // --- Assignment 1 Solution ---
-  print('--- Assignment 1 ---');
-  List<dynamic> mixedList = ['Hello', 100, true];
-  
-  // Create a safe List<String>
-  List<String> stringList = [];
-  for (var item in mixedList) {
-    if (item is String) {
-      stringList.add(item);
-    }
-  }
-  
-  printLengths(stringList);
-  print('\n');
-
-  // --- Assignment 2 Solution ---
-  print('--- Assignment 2 ---');
-  Car myCar = Car();
-  myCar.getBrand();
-  myCar.refuel("Gas"); // Object accepted
-  print('\n');
-
-  // --- Assignment 3 Solution ---
-  print('--- Assignment 3 ---');
   DogTrainer trainer = DogTrainer();
   trainer.train(Dog()); // Works
 
@@ -195,20 +200,48 @@ void main() {
   } catch (e) {
     print("Error caught: $e");
   }
+}
+```
 
-  // --- Assignment 4 Solution ---
-  print('--- Assignment 4 ---');
-  dynamic d = 'hello';
-  Object o = 'hello';
-  print(d.length);
-  // print(o.length); // Error
-  print(d);
-  print(o);
+### Solution 4: Type Promotion with Flow Analysis
 
-  // --- Assignment 5 Solution ---
-  print('--- Assignment 5 ---');
-  Object x = "Dart";
-  String s = x as String;
-  print(s.toUpperCase());
+```dart
+void processData(Object? data) {
+  if (data is List<int>) {
+    // Promoted to List<int>
+    int sum = 0;
+    for (var n in data) sum += n;
+    print('Sum: $sum');
+  } else if (data is String) {
+    // Promoted to String
+    print('String length: ${data.length}');
+  } else {
+    print('Unknown Type');
+  }
+}
+
+void main() {
+  processData([1, 2, 3]);
+  processData("Hello");
+}
+```
+
+### Solution 5: Runtime Failure Safety
+
+```dart
+void main() {
+  List<dynamic> mixed = [1, 2, "oops", 4];
+  
+  // cast() creates a view that checks types only when accessed
+  List<int> numbers = mixed.cast<int>();
+  
+  print('Iterating...');
+  try {
+    for (var n in numbers) {
+      print(n);
+    }
+  } catch (e) {
+    print('Error: $e');
+  }
 }
 ```

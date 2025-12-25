@@ -67,46 +67,58 @@ Credit Card: $102.5
 
 ---
 
-## Assignment 4: Ternary Logic (Conditional operator)
+## Assignment 4: Exhaustive Switch on Sealed Class (Advanced)
 
 **Objective:**
-Use the `? :` operator for concise conditional logic.
-*(الهدف: استخدام المعامل `? :` لمنطق شرطي موجز.)*
+Ensure all possible states are handled using `sealed` classes and exhaustiveness checking.
+*(الهدف: التأكد من معالجة جميع الحالات الممكنة باستخدام الفئات المختومة والتحقق من الشمولية.)*
 
 **Instructions:**
-1. Define `int age = 17`.
-2. Create a string `status` that is "Adult" if `age >= 18` and "Minor" otherwise.
-3. Print `status`.
+1. Define `sealed class AuthState {}`.
+2. Define subclasses `Authenticated`, `Unauthenticated`, and `Loading`.
+3. Create a function `String getMessage(AuthState state)`.
+4. Return a message using a `switch` expression.
+   - Note: Do NOT use a default case (`_`). Rely on Dart's compiler to force you to handle all 3 subclasses.
+5. Print messages for all 3 states.
 
 **Expected Output:**
 ```
-Minor
+User is logged in
+Please log in
+Loading...
 ```
 
 ---
 
-## Assignment 5: If-Case List (Pattern matching in if)
+## Assignment 5: Guard Clauses with Patterns (Advanced)
 
 **Objective:**
-Use `if case` to match a list pattern.
-*(الهدف: استخدام `if case` لمطابقة نمط قائمة.)*
+Use `when` clauses to add conditions to switch cases.
+*(الهدف: استخدام عبارات `when` لإضافة شروط إلى حالات switch.)*
 
 **Instructions:**
-1. Create a `List<int> numbers = [1, 2]`.
-2. Use `if (numbers case [int a, int b])` to check if it has exactly two integers.
-3. If so, print their sum.
+1. Create a Record `point = (x, y)`.
+2. Use a switch statement to print:
+   - "Diagonal" if `x == y` (use `case (var x, var y) when x == y`).
+   - "X-Axis" if `y == 0`.
+   - "Y-Axis" if `x == 0`.
+   - "Other" otherwise.
+3. Test with `(5, 5)`, `(0, 10)`, `(3, 4)`.
 
 **Expected Output:**
 ```
-Sum: 3
+Diagonal
+Y-Axis
+Other
 ```
 
 ---
 
 ## Solutions
 
+### Solution 1: Grade Calculator
+
 ```dart
-// Assignment 1
 String calculateGrade(int score) {
   if (score >= 90) return 'A';
   if (score >= 80) return 'B';
@@ -115,15 +127,17 @@ String calculateGrade(int score) {
   return 'F';
 }
 
-void assignment1() {
-  print('--- Grade Calculator ---');
+void main() {
   var scores = [95, 82, 40];
   for (var s in scores) {
     print('$s is ${calculateGrade(s)}');
   }
 }
+```
 
-// Assignment 2
+### Solution 2: Command Handler
+
+```dart
 void handleCommand(String command) {
   switch (command) {
     case 'START':
@@ -137,13 +151,15 @@ void handleCommand(String command) {
   }
 }
 
-void assignment2() {
-  print('\n--- Command Handler ---');
+void main() {
   handleCommand('START');
   handleCommand('RESET');
 }
+```
 
-// Assignment 3
+### Solution 3: Payment Processor
+
+```dart
 sealed class Payment {}
 class Cash extends Payment {}
 class CreditCard extends Payment {
@@ -158,34 +174,52 @@ double processPayment(double amount, Payment method) {
   };
 }
 
-void assignment3() {
-  print('\n--- Payment Processor ---');
+void main() {
   print('Cash: \$${processPayment(100, Cash())}');
   print('Credit Card: \$${processPayment(100, CreditCard(2.5))}');
 }
+```
 
-// Assignment 4
-void assignment4() {
-  int age = 17;
-  String status = (age >= 18) ? "Adult" : "Minor";
-  print(status);
+### Solution 4: Exhaustive Switch on Sealed Class
+
+```dart
+sealed class AuthState {}
+class Authenticated extends AuthState {}
+class Unauthenticated extends AuthState {}
+class Loading extends AuthState {}
+
+String getMessage(AuthState state) => switch (state) {
+  Authenticated() => 'User is logged in',
+  Unauthenticated() => 'Please log in',
+  Loading() => 'Loading...',
+};
+
+void main() {
+  print(getMessage(Authenticated()));
+  print(getMessage(Unauthenticated()));
+  print(getMessage(Loading()));
 }
+```
 
-// Assignment 5
-void assignment5() {
-  List<int> numbers = [1, 2];
-  if (numbers case [int a, int b]) {
-    print('Sum: ${a + b}');
+### Solution 5: Guard Clauses with Patterns
+
+```dart
+void checkPoint((int, int) point) {
+  switch (point) {
+    case (var x, var y) when x == y:
+      print('Diagonal');
+    case (_, 0):
+      print('X-Axis');
+    case (0, _):
+      print('Y-Axis');
+    default:
+      print('Other');
   }
 }
 
 void main() {
-  assignment1();
-  assignment2();
-  assignment3();
-  print('\n--- Assignment 4 ---');
-  assignment4();
-  print('\n--- Assignment 5 ---');
-  assignment5();
+  checkPoint((5, 5));
+  checkPoint((0, 10));
+  checkPoint((3, 4));
 }
 ```

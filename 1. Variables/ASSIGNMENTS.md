@@ -64,41 +64,45 @@ Error: Unsupported operation: Cannot add to an unmodifiable list
 
 ---
 
-## Assignment 4: Temperature Converter (Type conversion)
+## Assignment 4: Type Promotion (Advanced)
 
 **Objective:**
-Practice variable declaration and simple arithmetic.
-*(الهدف: التدرب على تعريف المتغيرات والحسابات البسيطة.)*
+Understand how Dart promotes types in control flows.
+*(الهدف: فهم كيفية ترقية الأنواع في تدفق التحكم في Dart.)*
 
 **Instructions:**
-1. Declare a `double` variable `celsius` and assign it `25.0`.
-2. Calculate Fahrenheit using the formula: `(celsius * 9 / 5) + 32`.
-3. Store the result in a variable `fahrenheit`.
-4. Print the result.
+1. Declare a variable `Object value = "Hello Dart"`.
+2. Try to access `.length` directly on `value` (comment out the line if it causes an error, noting why).
+3. Use an `if` check (`is String`) to check if `value` is a String.
+4. Inside the `if` block, print `value.length` (Dart knows it's a String now).
+5. Assign `100` to `value` (since it's an Object).
+6. Use another `if` check (`is int`) and print "It is an integer: $value".
 
 **Expected Output:**
 ```
-25.0 Celsius is 77.0 Fahrenheit
+Length of string: 10
+It is an integer: 100
 ```
 
 ---
 
-## Assignment 5: Variable Swapping (Logic)
+## Assignment 5: Null Safety & Flow Analysis (Advanced)
 
 **Objective:**
-Practice manipulating variable values.
-*(الهدف: التدرب على التعامل مع قيم المتغيرات.)*
+Master nullable types and flow analysis without using `!`.
+*(الهدف: إتقان الأنواع القابلة للفراغ وتحليل التدفق بدون استخدام `!`.)*
 
 **Instructions:**
-1. Declare two integer variables `a = 5` and `b = 10`.
-2. Swap their values so `a` becomes 10 and `b` becomes 5.
-3. You can use a temporary variable `temp`.
-4. Print the values before and after swapping.
+1. Create a function `int? getLength(String? str)` that returns the length of the string or null.
+2. Inside the function, use an `if (str == null)` check to return `null`.
+3. After the check, simply return `str.length`. Note that you don't need `?` or `!` because Dart knows `str` cannot be null at this point.
+4. In `main`, call `getLength` with "Test" and `null`.
+5. Use `??` to print "Unknown length" if the result is null.
 
 **Expected Output:**
 ```
-Before: a=5, b=10
-After: a=10, b=5
+Length: 4
+Length: Unknown length
 ```
 
 ---
@@ -166,29 +170,43 @@ void main() {
 }
 ```
 
-### Solution 4: Temperature Converter
+### Solution 4: Type Promotion
 
 ```dart
 void main() {
-  double celsius = 25.0;
-  double fahrenheit = (celsius * 9 / 5) + 32;
-  print('$celsius Celsius is $fahrenheit Fahrenheit');
+  Object value = "Hello Dart";
+  
+  // print(value.length); // Error: The getter 'length' isn't defined for the class 'Object'.
+  
+  if (value is String) {
+    // Type promoted to String automatically
+    print('Length of string: ${value.length}');
+  }
+  
+  value = 100;
+  if (value is int) {
+    print('It is an integer: $value');
+  }
 }
 ```
 
-### Solution 5: Variable Swapping
+### Solution 5: Null Safety & Flow Analysis
 
 ```dart
+int? getLength(String? str) {
+  // Flow analysis works here
+  if (str == null) {
+    return null; 
+  }
+  // Dart knows str is NOT null here
+  return str.length;
+}
+
 void main() {
-  int a = 5;
-  int b = 10;
+  var len1 = getLength("Test");
+  var len2 = getLength(null);
   
-  print('Before: a=$a, b=$b');
-  
-  int temp = a;
-  a = b;
-  b = temp;
-  
-  print('After: a=$a, b=$b');
+  print('Length: ${len1 ?? "Unknown length"}');
+  print('Length: ${len2 ?? "Unknown length"}');
 }
 ```

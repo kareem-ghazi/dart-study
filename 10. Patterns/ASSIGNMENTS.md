@@ -75,49 +75,53 @@ Primary Role: admin
 
 ---
 
-## Assignment 4: List Head/Tail (List pattern)
+## Assignment 4: Object Destructuring with Guard Clauses (Advanced)
 
 **Objective:**
-Use list patterns to separate the first element from the rest.
-*(الهدف: استخدام أنماط القائمة لفصل العنصر الأول عن الباقي.)*
+Match specific object shapes and apply conditions using `when`.
+*(الهدف: مطابقة أشكال كائنات محددة وتطبيق شروط باستخدام `when`.)*
 
 **Instructions:**
-1. Create a list `[10, 20, 30, 40]`.
-2. Use a pattern `[head, ...tail]` to destructure it.
-3. Print the head and the tail.
+1. Create a class `Shape` with properties `width` and `height`.
+2. Create a function `describe(Shape s)` that uses a switch statement.
+3. Case 1: Match `Shape(width: w, height: h)` when `w == h`. Return "Square".
+4. Case 2: Match any `Shape`. Return "Rectangle".
+5. Call it with `Shape(10, 10)` and `Shape(10, 20)`.
 
 **Expected Output:**
 ```
-Head: 10
-Tail: [20, 30, 40]
+Square
+Rectangle
 ```
 
 ---
 
-## Assignment 5: Logic Check (Logical patterns)
+## Assignment 5: JSON List Iteration (Advanced)
 
 **Objective:**
-Use logical-or patterns in a switch.
-*(الهدف: استخدام أنماط OR المنطقية في جملة switch.)*
+Destructure objects directly inside a `for-in` loop.
+*(الهدف: تفكيك الكائنات مباشرة داخل حلقة `for-in`.)*
 
 **Instructions:**
-1. Create a variable `command` with value "STOP".
-2. Use a switch statement.
-3. Match "STOP" or "EXIT" or "QUIT" in a single case using `||`.
-4. Print "Stopping...".
+1. Create a list of maps: `var users = [{'id': 1, 'name': 'A'}, {'id': 2, 'name': 'B'}]`.
+2. Write a `for` loop that iterates over `users`.
+3. Use the pattern `{'id': id, 'name': name}` directly in the loop definition (e.g., `for (var {...} in users)`).
+4. Print "User [name] has ID [id]".
 
 **Expected Output:**
 ```
-Stopping...
+User A has ID 1
+User B has ID 2
 ```
 
 ---
 
 ## Solutions
 
+### Solution 1: Basic Destructuring
+
 ```dart
-// Assignment 1
-void assignment1() {
+void main() {
   // List destructuring
   var colors = ['Red', 'Green', 'Blue'];
   var [c1, c2, c3] = colors;
@@ -127,10 +131,13 @@ void assignment1() {
   var book = {'title': 'Dart Guide', 'price': 29.99};
   // Using explicit key names to bind to variables
   var {'title': title, 'price': price} = book;
-  print('Book: $title costs $$price');
+  print('Book: $title costs \$$price');
 }
+```
 
-// Assignment 2
+### Solution 2: Switch Expression with Patterns
+
+```dart
 String classify(int number) {
   return switch (number) {
     0 => 'Zero',
@@ -140,15 +147,18 @@ String classify(int number) {
   };
 }
 
-void assignment2() {
+void main() {
   var numbers = [-5, 0, 5, 100];
   for (var n in numbers) {
     print('$n is ${classify(n)}');
   }
 }
+```
 
-// Assignment 3
-void assignment3() {
+### Solution 3: JSON Validation & Extraction
+
+```dart
+void main() {
   var response = {
     'status': 200,
     'data': {
@@ -165,34 +175,41 @@ void assignment3() {
     print('Invalid Response');
   }
 }
+```
 
-// Assignment 4
-void assignment4() {
-  var list = [10, 20, 30, 40];
-  var [head, ...tail] = list;
-  print('Head: $head');
-  print('Tail: $tail');
+### Solution 4: Object Destructuring with Guard Clauses
+
+```dart
+class Shape {
+  final int width;
+  final int height;
+  Shape(this.width, this.height);
 }
 
-// Assignment 5
-void assignment5() {
-  var command = "STOP";
-  switch (command) {
-    case "STOP" || "EXIT" || "QUIT":
-      print("Stopping...");
-  }
+String describe(Shape s) {
+  return switch (s) {
+    Shape(width: var w, height: var h) when w == h => 'Square',
+    Shape() => 'Rectangle',
+  };
 }
 
 void main() {
-  print('--- Assignment 1 ---');
-  assignment1();
-  print('\n--- Assignment 2 ---');
-  assignment2();
-  print('\n--- Assignment 3 ---');
-  assignment3();
-  print('\n--- Assignment 4 ---');
-  assignment4();
-  print('\n--- Assignment 5 ---');
-  assignment5();
+  print(describe(Shape(10, 10)));
+  print(describe(Shape(10, 20)));
+}
+```
+
+### Solution 5: JSON List Iteration
+
+```dart
+void main() {
+  var users = [
+    {'id': 1, 'name': 'A'},
+    {'id': 2, 'name': 'B'}
+  ];
+  
+  for (var {'id': id, 'name': name} in users) {
+    print('User $name has ID $id');
+  }
 }
 ```

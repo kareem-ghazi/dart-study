@@ -68,59 +68,66 @@ Combined List: [0, 1, 2, 3, 4, 6, 99]
 
 ---
 
-## Assignment 4: Map Values
+## Assignment 4: Nested Collections Processing (Advanced)
 
 **Objective:**
-Practice iterating over map values.
-*(الهدف: التدرب على التكرار عبر قيم الخريطة.)*
+Work with complex nested data structures (Map of Lists).
+*(الهدف: العمل مع هياكل البيانات المتداخلة المعقدة (خريطة قوائم).)*
 
 **Instructions:**
-1. Create a map of student names and their scores: `{'Ali': 90, 'Bob': 80}`.
-2. Iterate through the values using a loop.
-3. Print each score.
+1. Create a `Map<String, List<int>>` representing students and their grades:
+   `{'Ali': [90, 85, 88], 'Bob': [70, 60, 75]}`.
+2. Iterate through the map.
+3. For each student, calculate their average score.
+4. Print "Student: [Name], Average: [Value]".
 
 **Expected Output:**
 ```
-90
-80
+Student: Ali, Average: 87.6...
+Student: Bob, Average: 68.3...
 ```
 
 ---
 
-## Assignment 5: List Filtering
+## Assignment 5: Functional Methods (Fold & Reduce) (Advanced)
 
 **Objective:**
-Use the `.where` method to filter a list.
-*(الهدف: استخدام دالة `.where` لتصفية قائمة.)*
+Use higher-order functions `fold` and `reduce` for aggregation.
+*(الهدف: استخدام الدوال عالية المستوى `fold` و `reduce` للتجميع.)*
 
 **Instructions:**
-1. Create a list of numbers `[5, 12, 8, 20, 3]`.
-2. Use `.where` to create a new list containing only numbers greater than 10.
-3. Print the new list.
+1. Create a list of item prices: `[10.0, 20.0, 5.0, 30.0]`.
+2. Use `.fold(0, ...)` to calculate the total sum.
+3. Use `.reduce(...)` to find the highest price (max value).
+4. Print both results.
 
 **Expected Output:**
 ```
-[12, 20]
+Total Sum: 65.0
+Highest Price: 30.0
 ```
 
 ---
 
 ## Solutions
 
+### Solution 1: Shopping List
+
 ```dart
 void main() {
-  // --- Assignment 1 Solution ---
-  print('--- Assignment 1 ---');
   var shoppingList = ['Milk', 'Bread', 'Eggs'];
   shoppingList.add('Apples');
   shoppingList.remove('Bread');
   
   print('First item: ${shoppingList[0]}');
   print('Total items: ${shoppingList.length}');
-  print('\n');
+}
+```
 
-  // --- Assignment 2 Solution ---
-  print('--- Assignment 2 ---');
+### Solution 2: Unique Inventory
+
+```dart
+void main() {
   var rawIds = [101, 102, 101, 103, 102, 104];
   var uniqueIds = rawIds.toSet();
   print('Unique IDs: $uniqueIds');
@@ -132,10 +139,13 @@ void main() {
     104: 'Webcam'
   };
   print('Product 103: ${inventory[103]}');
-  print('\n');
+}
+```
 
-  // --- Assignment 3 Solution ---
-  print('--- Assignment 3 ---');
+### Solution 3: Filter and Merge
+
+```dart
+void main() {
   var listA = [1, 2, 3];
   var listB = [4, 5, 6];
   var addExtra = true;
@@ -149,18 +159,44 @@ void main() {
   ];
 
   print('Combined List: $combinedList');
+}
+```
 
-  // --- Assignment 4 Solution ---
-  print('--- Assignment 4 ---');
-  var scores = {'Ali': 90, 'Bob': 80};
-  for (var score in scores.values) {
-    print(score);
-  }
+### Solution 4: Nested Collections Processing
 
-  // --- Assignment 5 Solution ---
-  print('--- Assignment 5 ---');
-  var numbers = [5, 12, 8, 20, 3];
-  var filtered = numbers.where((n) => n > 10).toList();
-  print(filtered);
+```dart
+void main() {
+  var grades = {
+    'Ali': [90, 85, 88],
+    'Bob': [70, 60, 75]
+  };
+
+  grades.forEach((name, scores) {
+    double sum = 0;
+    for (var score in scores) {
+      sum += score;
+    }
+    double average = sum / scores.length;
+    print('Student: $name, Average: $average');
+  });
+}
+```
+
+### Solution 5: Functional Methods (Fold & Reduce)
+
+```dart
+import 'dart:math'; // For max function if preferred, but manual reduce is fine too
+
+void main() {
+  var prices = [10.0, 20.0, 5.0, 30.0];
+  
+  // Fold: starts with initial value (0.0)
+  double total = prices.fold(0.0, (prev, element) => prev + element);
+  
+  // Reduce: starts with first element
+  double highest = prices.reduce((curr, next) => curr > next ? curr : next);
+  
+  print('Total Sum: $total');
+  print('Highest Price: $highest');
 }
 ```

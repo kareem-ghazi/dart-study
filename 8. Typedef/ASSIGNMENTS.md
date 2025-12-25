@@ -62,61 +62,74 @@ Result: 5
 
 ---
 
-## Assignment 4: Callback Alias
+## Assignment 4: Generic Typedef Callback (Advanced)
 
 **Objective:**
-Create a type alias for a void callback function.
-*(الهدف: إنشاء اسم مستعار لدالة إرجاع (callback) لا ترجع قيمة.)*
+Create a Generic typedef that can handle different types.
+*(الهدف: إنشاء typedef عام يمكنه التعامل مع أنواع مختلفة.)*
 
 **Instructions:**
-1. Define a typedef `Logger` for `void Function(String msg)`.
-2. Create a function `process(Logger log)` that calls `log("Done")`.
-3. Pass a print function (wrapped) to `process`.
+1. Define a generic typedef `Mapper<T, R>` as a function that takes `T` and returns `R`.
+2. Create a function `List<R> transform<T, R>(List<T> items, Mapper<T, R> mapper)`.
+3. Inside, iterate over items, apply the mapper, and return the new list.
+4. Call it to transform `[1, 2, 3]` (int) to `["1", "2", "3"]` (String).
 
 **Expected Output:**
 ```
-Done
+Transformed: [1, 2, 3]
 ```
 
 ---
 
-## Assignment 5: Integer List Alias
+## Assignment 5: Record Typedef (Advanced)
 
 **Objective:**
-Alias a specific List type.
-*(الهدف: تسمية نوع قائمة محدد.)*
+Use modern typedef syntax to alias a Record structure.
+*(الهدف: استخدام صيغة typedef الحديثة لتسمية هيكل سجل.)*
 
 **Instructions:**
-1. Define `IntList` as `List<int>`.
-2. Create an `IntList` with values `[1, 2, 3]`.
-3. Print the list.
+1. Define a typedef `UserInfo` as `({String name, int id})`.
+2. Create a function `printUser(UserInfo user)` that prints "User [name] has ID [id]".
+3. Create a record matching that shape and pass it to the function.
 
 **Expected Output:**
 ```
-[1, 2, 3]
+User Alice has ID 101
 ```
 
 ---
 
 ## Solutions
 
+### Solution 1: Simple Alias
+
 ```dart
-// --- Assignment 1 Typedef ---
 typedef Prices = List<double>;
 
-// --- Assignment 2 Typedef ---
+void main() {
+  Prices cart = [10.5, 20.0, 5.99];
+  print('Prices: $cart');
+}
+```
+
+### Solution 2: Nested Collection Alias
+
+```dart
 typedef Classroom = Map<String, List<String>>;
 
-// --- Assignment 3 Typedef ---
+void main() {
+  Classroom myClass = {
+    'Mr. Smith': ['John', 'Jane', 'Doe']
+  };
+  print('Students of Mr. Smith: ${myClass['Mr. Smith']}');
+}
+```
+
+### Solution 3: Math Operation Alias
+
+```dart
 typedef MathOp = int Function(int a, int b);
 
-// --- Assignment 4 Typedef ---
-typedef Logger = void Function(String msg);
-
-// --- Assignment 5 Typedef ---
-typedef IntList = List<int>;
-
-// --- Assignment 3 Functions ---
 int multiply(int a, int b) => a * b;
 int divide(int a, int b) => a ~/ b;
 
@@ -124,38 +137,42 @@ void perform(int x, int y, MathOp op) {
   print('Result: ${op(x, y)}');
 }
 
-// --- Assignment 4 Function ---
-void process(Logger log) {
-  log("Done");
+void main() {
+  perform(10, 2, multiply);
+  perform(10, 2, divide);
+}
+```
+
+### Solution 4: Generic Typedef Callback
+
+```dart
+typedef Mapper<T, R> = R Function(T item);
+
+List<R> transform<T, R>(List<T> items, Mapper<T, R> mapper) {
+  var result = <R>[];
+  for (var item in items) {
+    result.add(mapper(item));
+  }
+  return result;
 }
 
 void main() {
-  // --- Assignment 1 Solution ---
-  print('--- Assignment 1 ---');
-  Prices cart = [10.5, 20.0, 5.99];
-  print('Prices: $cart');
-  print('\n');
+  var nums = [1, 2, 3];
+  var strings = transform(nums, (int n) => n.toString());
+  print('Transformed: $strings');
+}
+```
 
-  // --- Assignment 2 Solution ---
-  print('--- Assignment 2 ---');
-  Classroom myClass = {
-    'Mr. Smith': ['John', 'Jane', 'Doe']
-  };
-  print('Students of Mr. Smith: ${myClass['Mr. Smith']}');
-  print('\n');
+### Solution 5: Record Typedef
 
-  // --- Assignment 3 Solution ---
-  print('--- Assignment 3 ---');
-  perform(10, 2, multiply);
-  perform(10, 2, divide);
+```dart
+typedef UserInfo = ({String name, int id});
 
-  // --- Assignment 4 Solution ---
-  print('--- Assignment 4 ---');
-  process((msg) => print(msg));
+void printUser(UserInfo user) {
+  print('User ${user.name} has ID ${user.id}');
+}
 
-  // --- Assignment 5 Solution ---
-  print('--- Assignment 5 ---');
-  IntList list = [1, 2, 3];
-  print(list);
+void main() {
+  printUser((name: 'Alice', id: 101));
 }
 ```

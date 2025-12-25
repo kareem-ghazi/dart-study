@@ -65,49 +65,71 @@ Swapped Ints: [1, 3, 2]
 
 ---
 
-## Assignment 4: Generic Pair
+## Assignment 4: Bounded Generics (Advanced)
 
 **Objective:**
-Create a Generic Pair class holding two values of the same type.
-*(الهدف: إنشاء فئة Pair عامة تحتوي على قيمتين من نفس النوع.)*
+Restrict generic types using `extends` to ensure they support specific operations (like math).
+*(الهدف: تقييد الأنواع العامة باستخدام `extends` للتأكد من أنها تدعم عمليات معينة (مثل الرياضيات).)*
 
 **Instructions:**
-1. Define a class `Pair<T>`.
-2. Add two fields `first` and `second` of type `T`.
-3. Create a constructor.
-4. Create a `Pair<int>` with 10 and 20.
-5. Print both values.
+1. Write a function `T sum<T extends num>(T a, T b)`.
+2. Inside, return `(a + b) as T`. (Note: Dart math returns appropriate num type, casting might be needed for strict T).
+3. Call it with two integers `10` and `20`.
+4. Call it with two doubles `1.5` and `2.5`.
+5. Try calling it with Strings (commented out) to see the compile error.
 
 **Expected Output:**
 ```
-10, 20
+Sum Int: 30
+Sum Double: 4.0
 ```
 
 ---
 
-## Assignment 5: Generic Printer
+## Assignment 5: Generic Cache (Advanced)
 
 **Objective:**
-Write a generic function that prints details about the type.
-*(الهدف: كتابة دالة عامة تطبع تفاصيل حول النوع.)*
+Build a generic caching class using a Map.
+*(الهدف: بناء فئة تخزين مؤقت عامة باستخدام خريطة.)*
 
 **Instructions:**
-1. Write a function `printDetails<T>(T value)`.
-2. It should print the value and its runtime type.
-3. Call it with a string and an integer.
+1. Create a class `Cache<T>`.
+2. It should have a private map `Map<String, T> _storage`.
+3. Add method `void setItem(String key, T item)`.
+4. Add method `T? getItem(String key)`.
+5. In `main`, use `Cache<String>` to store a username and `Cache<int>` to store a score. Retrieve and print them.
 
 **Expected Output:**
 ```
-Value: Hello, Type: String
-Value: 100, Type: int
+User: Admin
+Score: 100
 ```
 
 ---
 
 ## Solutions
 
+### Solution 1: Type-Safe List
+
 ```dart
-// --- Assignment 2 Class ---
+double calculateAverage(List<int> scores) {
+  if (scores.isEmpty) return 0.0;
+  var sum = 0;
+  for (var score in scores) {
+    sum += score;
+  }
+  return sum / scores.length;
+}
+
+void main() {
+  List<int> scores = [90, 85, 77];
+  print('Average: ${calculateAverage(scores)}');
+}
+```
+
+### Solution 2: Generic Box
+
+```dart
 class Box<T> {
   late T _value;
 
@@ -120,24 +142,20 @@ class Box<T> {
   }
 }
 
-// --- Assignment 4 Class ---
-class Pair<T> {
-  final T first;
-  final T second;
-  Pair(this.first, this.second);
-}
+void main() {
+  var stringBox = Box<String>();
+  stringBox.put("Hello");
+  print('String Box: ${stringBox.get()}');
 
-// --- Assignment 1 Helper ---
-double calculateAverage(List<int> scores) {
-  if (scores.isEmpty) return 0.0;
-  var sum = 0;
-  for (var score in scores) {
-    sum += score;
-  }
-  return sum / scores.length;
+  var intBox = Box<int>();
+  intBox.put(123);
+  print('Int Box: ${intBox.get()}');
 }
+```
 
-// --- Assignment 3 Helper ---
+### Solution 3: Generic Swapper
+
+```dart
 void swapValues<T>(List<T> list, int i1, int i2) {
   if (i1 >= 0 && i1 < list.length && i2 >= 0 && i2 < list.length) {
     var temp = list[i1];
@@ -146,32 +164,7 @@ void swapValues<T>(List<T> list, int i1, int i2) {
   }
 }
 
-// --- Assignment 5 Helper ---
-void printDetails<T>(T value) {
-  print('Value: $value, Type: ${value.runtimeType}');
-}
-
 void main() {
-  // --- Assignment 1 Solution ---
-  print('--- Assignment 1 ---');
-  List<int> scores = [90, 85, 77];
-  // scores.add("text"); // Error!
-  print('Average: ${calculateAverage(scores)}');
-  print('\n');
-
-  // --- Assignment 2 Solution ---
-  print('--- Assignment 2 ---');
-  var stringBox = Box<String>();
-  stringBox.put("Hello");
-  print('String Box: ${stringBox.get()}');
-
-  var intBox = Box<int>();
-  intBox.put(123);
-  print('Int Box: ${intBox.get()}');
-  print('\n');
-
-  // --- Assignment 3 Solution ---
-  print('--- Assignment 3 ---');
   var letters = ['A', 'B', 'C'];
   swapValues(letters, 0, 2);
   print('Swapped Strings: $letters');
@@ -179,16 +172,47 @@ void main() {
   var numbers = [1, 2, 3];
   swapValues(numbers, 1, 2);
   print('Swapped Ints: $numbers');
-  print('\n');
+}
+```
 
-  // --- Assignment 4 Solution ---
-  print('--- Assignment 4 ---');
-  var pair = Pair(10, 20);
-  print('${pair.first}, ${pair.second}');
+### Solution 4: Bounded Generics
 
-  // --- Assignment 5 Solution ---
-  print('--- Assignment 5 ---');
-  printDetails('Hello');
-  printDetails(100);
+```dart
+T sum<T extends num>(T a, T b) {
+  // Dart arithmetic on 'num' returns 'num'. 
+  // We cast to T to satisfy the return type.
+  return (a + b) as T; 
+}
+
+void main() {
+  print('Sum Int: ${sum(10, 20)}');
+  print('Sum Double: ${sum(1.5, 2.5)}');
+  // sum("A", "B"); // Error: String doesn't extend num
+}
+```
+
+### Solution 5: Generic Cache
+
+```dart
+class Cache<T> {
+  final Map<String, T> _storage = {};
+
+  void setItem(String key, T item) {
+    _storage[key] = item;
+  }
+
+  T? getItem(String key) {
+    return _storage[key];
+  }
+}
+
+void main() {
+  var userCache = Cache<String>();
+  userCache.setItem('current_user', 'Admin');
+  print('User: ${userCache.getItem('current_user')}');
+
+  var scoreCache = Cache<int>();
+  scoreCache.setItem('high_score', 100);
+  print('Score: ${scoreCache.getItem('high_score')}');
 }
 ```

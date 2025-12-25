@@ -63,44 +63,47 @@ Found 9!
 
 ---
 
-## Assignment 4: Decrement Loop (Reverse for)
+## Assignment 4: Nested Loops & Labels (Advanced)
 
 **Objective:**
-Practice looping backwards.
-*(الهدف: التدرب على التكرار العكسي.)*
+Control nested loops using labels and `break`.
+*(الهدف: التحكم في الحلقات المتداخلة باستخدام التسميات و `break`.)*
 
 **Instructions:**
-1. Write a for loop that starts at 5 and goes down to 1.
-2. Print each number.
-3. Print "Liftoff!" after the loop.
+1. Create a 2D grid: `var grid = [[1, 2], [3, 4], [5, 6]];`.
+2. Write a nested loop to find the number `4`.
+3. Use a label `outerLoop:` before the first loop.
+4. When `4` is found, print "Found 4 at [$i][$j]" and `break outerLoop` to stop *both* loops immediately.
+5. Print "Done" after the loops to verify it exited correctly.
 
 **Expected Output:**
 ```
-5
-4
-3
-2
-1
-Liftoff!
+Checking 1...
+Checking 2...
+Checking 3...
+Found 4 at [1][1]
+Done
 ```
 
 ---
 
-## Assignment 5: Do-While Input (Simulation)
+## Assignment 5: Async For-In (Advanced)
 
 **Objective:**
-Ensure a block runs at least once.
-*(الهدف: التأكد من تشغيل الكتلة مرة واحدة على الأقل.)*
+Iterate over an asynchronous stream of data using `await for`.
+*(الهدف: التكرار عبر تدفق بيانات غير متزامن باستخدام `await for`.)*
 
 **Instructions:**
-1. Define `int count = 0`.
-2. Use a do-while loop that increments `count` and prints it.
-3. The condition should be `count < 3`.
+1. Create a function `Stream<int> countStream(int to) async*` that yields numbers from 1 to `to` with a 1-second delay between each.
+2. In `main` (marked `async`), use `await for (var n in countStream(3))` to loop through the stream.
+3. Print each number.
 
 **Expected Output:**
 ```
 1
+(1 second delay)
 2
+(1 second delay)
 3
 ```
 
@@ -108,9 +111,10 @@ Ensure a block runs at least once.
 
 ## Solutions
 
+### Solution 1: The Even Counter
+
 ```dart
-// Assignment 1
-void assignment1() {
+void main() {
   print('--- Even Numbers ---');
   for (int i = 1; i <= 20; i++) {
     if (i % 2 == 0) {
@@ -118,9 +122,12 @@ void assignment1() {
     }
   }
 }
+```
 
-// Assignment 2
-void assignment2() {
+### Solution 2: Summing a List
+
+```dart
+void main() {
   print('\n--- Summing List ---');
   List<double> prices = [12.5, 10.0, 5.5, 2.0];
   double total = 0;
@@ -130,9 +137,12 @@ void assignment2() {
   }
   print('Total Price: $total');
 }
+```
 
-// Assignment 3
-void assignment3() {
+### Solution 3: Guessing Game Simulation
+
+```dart
+void main() {
   print('\n--- Guessing Game ---');
   List<int> guesses = [3, 7, 1, 9, 5];
   int target = 9;
@@ -152,33 +162,51 @@ void assignment3() {
     index++; // Move to next guess
   }
 }
+```
 
-// Assignment 4
-void assignment4() {
-  print('\n--- Decrement Loop ---');
-  for (int i = 5; i > 0; i--) {
-    print(i);
-  }
-  print('Liftoff!');
-}
+### Solution 4: Nested Loops & Labels
 
-// Assignment 5
-void assignment5() {
-  print('\n--- Do-While ---');
-  int count = 0;
-  do {
-    count++;
-    print(count);
-  } while (count < 3);
-}
-
+```dart
 void main() {
-  assignment1();
-  assignment2();
-  assignment3();
-  assignment4();
-  assignment5();
+  var grid = [
+    [1, 2],
+    [3, 4],
+    [5, 6]
+  ];
+
+  outerLoop: // Label
+  for (int i = 0; i < grid.length; i++) {
+    for (int j = 0; j < grid[i].length; j++) {
+      int num = grid[i][j];
+      print('Checking $num...');
+      
+      if (num == 4) {
+        print('Found 4 at [$i][$j]');
+        break outerLoop; // Breaks the labeled loop (the outer one)
+      }
+    }
+  }
+  print('Done');
 }
 ```
 
+### Solution 5: Async For-In
+
+```dart
+import 'dart:async';
+
+Stream<int> countStream(int to) async* {
+  for (int i = 1; i <= to; i++) {
+    await Future.delayed(Duration(seconds: 1));
+    yield i;
+  }
+}
+
+void main() async {
+  print('Starting stream...');
+  await for (var n in countStream(3)) {
+    print(n);
+  }
+  print('Stream finished');
+}
 ```

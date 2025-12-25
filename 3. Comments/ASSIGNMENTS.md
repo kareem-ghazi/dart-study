@@ -74,42 +74,47 @@ Write professional `///` documentation comments with references.
 
 ---
 
-## Assignment 4: TODO Tracker (TODO comments)
+## Assignment 4: Lint Suppression (Advanced)
 
 **Objective:**
-Practice using `TODO` comments to mark future tasks.
-*(الهدف: التدرب على استخدام تعليقات `TODO` لتمييز المهام المستقبلية.)*
+Use comments to interact with the analysis server (`ignore` rules).
+*(الهدف: استخدام التعليقات للتفاعل مع خادم التحليل (تجاهل القواعد).)*
 
 **Instructions:**
-1. Create a function `void notImplementedYet()`.
-2. Inside, add a `// TODO:` comment saying "Implement this function later".
-3. Print "Function is empty for now".
+1. Define a local string variable `unusedVariable` inside `main` but do NOT use it.
+2. Normally, Dart's linter warns about "Unused local variable".
+3. Add a specific comment `// ignore: unused_local_variable` on the line above it to silence the warning.
+4. Add another variable and use `// ignore_for_file: unused_local_variable` at the very top of the file to silence it for the whole file.
 
 **Expected Output:**
-(No change in output, just the comment in code)
+(No output, but the analysis warning should disappear in your IDE).
 
 ---
 
-## Assignment 5: Deprecation Notice (Annotation comments)
+## Assignment 5: Rich Documentation (Advanced)
 
 **Objective:**
-Use documentation comments to mark a method as deprecated.
-*(الهدف: استخدام تعليقات التوثيق لتمييز دالة كمهملة.)*
+Master Markdown features within `///` documentation comments.
+*(الهدف: إتقان ميزات Markdown داخل تعليقات التوثيق `///`.)*
 
 **Instructions:**
-1. Create a function `oldMethod()`.
-2. Add a documentation comment `///` saying "This method is deprecated, use [newMethod] instead."
-3. Add the `@deprecated` annotation before the function.
+1. Create a function `void connectToDatabase()`.
+2. Write a documentation comment that includes:
+   - A **Bold** warning about network costs.
+   - A bulleted list of steps (e.g., 1. Open socket, 2. Handshake).
+   - A Markdown code block showing how to call the function.
+3. (Optional) Run `dart doc .` if you have the SDK installed to see the HTML output, or just hover over the function in your IDE.
 
 **Expected Output:**
-(No output change, but editors will strike through the method name if used)
+(Code compiles, hover tooltip shows formatted text).
 
 ---
 
 ## Solutions
 
+### Solution 1: The Explainer
+
 ```dart
-// Assignment 1 Solution
 void main() {
   // Define the base price of the item
   double price = 100.0;
@@ -123,8 +128,9 @@ void main() {
 }
 ```
 
+### Solution 2: The Debugger
+
 ```dart
-// Assignment 2 Solution
 void main() {
   print("Start");
   
@@ -140,9 +146,9 @@ void main() {
 }
 ```
 
-```dart
-// Assignment 3 Solution
+### Solution 3: The API Writer
 
+```dart
 /// A simple math utility class.
 /// 
 /// Use this to perform basic arithmetic operations.
@@ -162,27 +168,42 @@ void main() {
 }
 ```
 
+### Solution 4: Lint Suppression
+
 ```dart
-// Assignment 4 Solution
-void notImplementedYet() {
-  // TODO: Implement this function later
-  print("Function is empty for now");
-}
+// ignore_for_file: unused_local_variable
 
 void main() {
-  notImplementedYet();
+  // This warning is ignored for the specific line
+  // ignore: unused_local_variable
+  var ignoredVar = "I am ignored";
+  
+  // This warning is ignored because of the file-level comment
+  var fileIgnoredVar = "Me too";
 }
 ```
 
+### Solution 5: Rich Documentation
+
 ```dart
-// Assignment 5 Solution
-/// This method is deprecated, use [newMethod] instead.
-@deprecated
-void oldMethod() {
-  print("Old method");
+/// Connects to the remote database.
+///
+/// **Warning: This operation is expensive.**
+///
+/// Steps:
+/// * Open socket
+/// * Handshake
+/// * Authenticate
+///
+/// Example:
+/// ```dart
+/// connectToDatabase();
+/// ```
+void connectToDatabase() {
+  print("Connecting...");
 }
 
 void main() {
-  oldMethod();
+  connectToDatabase();
 }
 ```

@@ -79,48 +79,54 @@ Adult: Sara
 
 ---
 
-## Assignment 4: Cast Pattern (as operator)
+## Assignment 4: Validation Logic with Logical Patterns (Advanced)
 
 **Objective:**
-Use the cast pattern to handle dynamic types safely.
-*(الهدف: استخدام نمط التحويل للتعامل مع الأنواع الديناميكية بأمان.)*
+Combine Logical-AND (`&&`) and Logical-OR (`||`) to validate complex data.
+*(الهدف: دمج AND و OR المنطقيين للتحقق من صحة البيانات المعقدة.)*
 
 **Instructions:**
-1. Create a variable `dynamic d = 10`.
-2. Use a switch statement on `d`.
-3. Match it using `var i as int`.
-4. Print "It is an integer: [i]".
+1. Create a `Map<String, dynamic>` representing a user: `{'age': 20, 'role': 'admin'}`.
+2. Use a switch statement (or `if-case`) to validate access.
+3. Case: Age must be >= 18 AND Role must be 'admin' OR 'mod'.
+   * Pattern: `{'age': >= 18, 'role': 'admin' || 'mod'}`.
+4. Print "Access Granted" if matched, else "Access Denied".
+5. Test with an admin user and a guest user.
 
 **Expected Output:**
 ```
-It is an integer: 10
+Access Granted
 ```
 
 ---
 
-## Assignment 5: Range Check (Relational)
+## Assignment 5: Deep Cast Pattern (Advanced)
 
 **Objective:**
-Use relational patterns to validate a score.
-*(الهدف: استخدام الأنماط العلائقية للتحقق من الدرجة.)*
+Validate and cast types deep inside a structure in one step.
+*(الهدف: التحقق من الأنواع وتحويلها داخل هيكل عميق في خطوة واحدة.)*
 
 **Instructions:**
-1. Create a function `isValidScore(int score)`.
-2. Use a switch expression that returns `true` if score is `>= 0 && <= 100`, else `false`.
-3. Print the result for 50 and 150.
+1. Create a heterogeneous list: `var data = [1, "2", 3]`.
+2. Write an `if-case` to check if the list contains:
+   * First element: `1`.
+   * Second element: Any String (bind to variable `s`).
+   * Third element: `3`.
+3. Inside the `if`, print `s` parsed as an int (`int.parse(s)`).
+4. Try changing the middle element to a number in the source to ensure the pattern fails safely.
 
 **Expected Output:**
 ```
-true
-false
+Parsed middle element: 2
 ```
 
 ---
 
 ## Solutions
 
+### Solution 1: Relational & Logical Patterns
+
 ```dart
-// Assignment 1
 void checkTemperature(int temp) {
   switch (temp) {
     case < 0:
@@ -136,7 +142,18 @@ void checkTemperature(int temp) {
   }
 }
 
-// Assignment 2
+void main() {
+  checkTemperature(-5);
+  checkTemperature(0);
+  checkTemperature(20);
+  checkTemperature(35);
+  checkTemperature(10);
+}
+```
+
+### Solution 2: Collection & Rest Patterns
+
+```dart
 void analyzeList(List<int> numbers) {
   switch (numbers) {
     case []:
@@ -152,74 +169,75 @@ void analyzeList(List<int> numbers) {
   }
 }
 
-// Assignment 3
+void main() {
+  analyzeList([]);
+  analyzeList([5]);
+  analyzeList([0, 1, 2]);
+  analyzeList([1, 2, 99]);
+  analyzeList([5, 5]);
+}
+```
+
+### Solution 3: Object & Null-Check Patterns
+
+```dart
 class User {
   final String? name;
   final int age;
   User(this.name, this.age);
 }
 
-void assignment3() {
+void main() {
   var users = [
     User('Ali', 25),
     User(null, 30),
-    User('Sara', 20), // Adult
-    User('Kid', 10)   // Minor
+    User('Sara', 20),
+    User('Kid', 10)
   ];
 
   for (var user in users) {
     switch (user) {
-      // Matches if name is NOT null (?) AND age > 18
       case User(name: var n?, age: > 18):
         print('Adult: $n');
-      
-      // Matches if name IS null
       case User(name: null):
         print('Anonymous User');
-      
       default:
         print('Minor');
     }
   }
 }
+```
 
-// Assignment 4
-void assignment4() {
-  dynamic d = 10;
-  switch (d) {
-    case var i as int:
-      print('It is an integer: $i');
+### Solution 4: Validation Logic with Logical Patterns
+
+```dart
+void checkAccess(Map<String, dynamic> user) {
+  switch (user) {
+    case {'age': >= 18, 'role': 'admin' || 'mod'}:
+      print('Access Granted');
+    default:
+      print('Access Denied');
   }
 }
 
-// Assignment 5
-bool isValidScore(int score) => switch(score) {
-  >= 0 && <= 100 => true,
-  _ => false
-};
-
 void main() {
-  print('--- Assignment 1 ---');
-  checkTemperature(-5);
-  checkTemperature(0);
-  checkTemperature(20);
-  checkTemperature(35);
-  checkTemperature(10);
-
-  print('\n--- Assignment 2 ---');
-  analyzeList([]);
-  analyzeList([5]);
-  analyzeList([0, 1, 2]);
-  analyzeList([1, 2, 99]);
-  analyzeList([5, 5]);
-
-  print('\n--- Assignment 3 ---');
-  assignment3();
-
-  print('\n--- Assignment 4 ---');
-  assignment4();
-
-  print('\n--- Assignment 5 ---');
-  print(isValidScore(50));
-  print(isValidScore(150));
+  checkAccess({'age': 20, 'role': 'admin'});
+  checkAccess({'age': 16, 'role': 'admin'});
+  checkAccess({'age': 25, 'role': 'guest'});
 }
+```
+
+### Solution 5: Deep Cast Pattern
+
+```dart
+void main() {
+  var data = [1, "2", 3];
+  
+  // Checks structure AND type (String) of 2nd element
+  if (data case [1, String s, 3]) {
+    print('Parsed middle element: ${int.parse(s)}');
+  } else {
+    print('Pattern mismatch');
+  }
+}
+```

@@ -64,40 +64,47 @@ Runes: 12
 
 ---
 
-## Assignment 4: List Basics (List type)
+## Assignment 4: BigInt Factorial (Advanced)
 
 **Objective:**
-Practice basic List operations.
-*(الهدف: التدرب على عمليات القائمة الأساسية.)*
+Handle numbers larger than the standard 64-bit integer limit using `BigInt`.
+*(الهدف: التعامل مع أرقام أكبر من حد العدد الصحيح القياسي 64-بت باستخدام `BigInt`.)*
 
 **Instructions:**
-1. Create a list of integers `numbers = [1, 2, 3]`.
-2. Add the number 4 to the list.
-3. Remove the number 2.
-4. Print the final list.
+1. Try to calculate the factorial of 25 using standard `int` (it will overflow or be incorrect/negative).
+2. Change the implementation to use `BigInt`.
+3. Define `BigInt n = BigInt.from(25)`.
+4. Use a loop to multiply `result` (starting at `BigInt.one`) by numbers down to 1.
+5. Print the result.
 
 **Expected Output:**
 ```
-[1, 3, 4]
+Factorial of 25: 15511210043330985984000000
 ```
 
 ---
 
-## Assignment 5: Boolean Logic (Bool type)
+## Assignment 5: Numeric Polymorphism (Advanced)
 
 **Objective:**
-Practice working with boolean values.
-*(الهدف: التدرب على العمل مع القيم المنطقية.)*
+Understand the `num` type and how to handle `int` and `double` generically.
+*(الهدف: فهم النوع `num` وكيفية التعامل مع `int` و `double` بشكل عام.)*
 
 **Instructions:**
-1. Define `bool isRaining = true`.
-2. Define `bool hasUmbrella = false`.
-3. Create a variable `willGetWet` that is true if it is raining AND you do not have an umbrella.
-4. Print "Will I get wet? [result]".
+1. Create a list `List<num> numbers = [10, 3.14, 5, 2.5]`.
+2. Iterate through the list.
+3. For each number, check `is int` or `is double`.
+4. If it's an integer, print "Integer: [value]".
+5. If it's a double, print "Double: [value] (Rounded: [round()])".
+6. Calculate the sum of all numbers.
 
 **Expected Output:**
 ```
-Will I get wet? true
+Integer: 10
+Double: 3.14 (Rounded: 3)
+Integer: 5
+Double: 2.5 (Rounded: 3)
+Sum: 20.64
 ```
 
 ---
@@ -157,23 +164,34 @@ void main() {
 }
 ```
 
-### Solution 4: List Basics
+### Solution 4: BigInt Factorial
 ```dart
 void main() {
-  List<int> numbers = [1, 2, 3];
-  numbers.add(4);
-  numbers.remove(2);
-  print(numbers);
+  BigInt n = BigInt.from(25);
+  BigInt result = BigInt.one;
+  
+  for (BigInt i = n; i > BigInt.zero; i = i - BigInt.one) {
+    result = result * i;
+  }
+  
+  print('Factorial of 25: $result');
 }
 ```
 
-### Solution 5: Boolean Logic
+### Solution 5: Numeric Polymorphism
 ```dart
 void main() {
-  bool isRaining = true;
-  bool hasUmbrella = false;
+  List<num> numbers = [10, 3.14, 5, 2.5];
+  num sum = 0;
   
-  bool willGetWet = isRaining && !hasUmbrella;
-  print('Will I get wet? $willGetWet');
+  for (var n in numbers) {
+    sum += n;
+    if (n is int) {
+      print('Integer: $n');
+    } else if (n is double) {
+      print('Double: $n (Rounded: ${n.round()})');
+    }
+  }
+  print('Sum: $sum');
 }
 ```

@@ -64,52 +64,52 @@ Welcome back!
 
 ---
 
-## Assignment 4: Grade Checker (Relational & Logical)
+## Assignment 4: Cascade Builder (Advanced)
 
 **Objective:**
-Use relational and logical operators to determine grades.
-*(الهدف: استخدام المعاملات العلاقية والمنطقية لتحديد الدرجات.)*
+Use the Cascade Operator (`..`) to configure objects fluently.
+*(الهدف: استخدام معامل التتابع `..` لتهيئة الكائنات بسلاسة.)*
 
 **Instructions:**
-1. Define an integer `score`.
-2. Create a boolean `isPass` that is true if `score` is greater than or equal to 50.
-3. Create a boolean `isExcellent` that is true if `score` is greater than 90.
-4. Print the results.
+1. Create a class `Request` with properties: `String url`, `String method`, `Map<String, String> headers`.
+2. In `main`, instantiate `Request`.
+3. Use the cascade operator `..` to set `url` to 'https://api.example.com', `method` to 'GET', and add a header 'Authorization' with value 'Bearer 123'.
+4. Print the object's properties to verify.
 
-**Expected Output (for score 95):**
+**Expected Output:**
 ```
-Pass: true
-Excellent: true
+Request(url: https://api.example.com, method: GET, headers: {Authorization: Bearer 123})
 ```
 
 ---
 
-## Assignment 5: Increment/Decrement (Unary)
+## Assignment 5: Bitwise Permissions (Advanced)
 
 **Objective:**
-Practice using prefix and postfix increment/decrement operators.
-*(الهدف: التدرب على استخدام معاملات الزيادة والنقصان القبلية والبعدية.)*
+Use Bitwise operators (`|`, `&`, `<<`) to manage permission flags.
+*(الهدف: استخدام المعاملات الثنائية `|`، `&`، `<<` لإدارة أعلام الصلاحيات.)*
 
 **Instructions:**
-1. Define a variable `count = 10`.
-2. Print `count++` (postfix).
-3. Print `++count` (prefix).
-4. Print `count`.
-5. Observe the differences.
+1. Define constants for permissions using bit shifts: `READ = 1` (001), `WRITE = 2` (010), `EXECUTE = 4` (100).
+2. Create a variable `userPerms` and assign it `READ | WRITE` (Binary 011 = 3).
+3. Check if `userPerms` has `WRITE` permission using `&` (i.e., `(userPerms & WRITE) != 0`).
+4. Toggle `WRITE` permission off using XOR `^` or complex logic, then check again. (Simplest: just check the first part).
+5. Print "Has Write: true" or false.
 
 **Expected Output:**
 ```
-10
-12
-12
+User Permissions: 3
+Has Write Access: true
+Has Execute Access: false
 ```
 
 ---
 
 ## Solutions
 
+### Solution 1: The Bill Splitter
+
 ```dart
-// Assignment 1 Solution
 void main() {
   double totalBill = 50.0;
   int people = 2;
@@ -118,15 +118,16 @@ void main() {
   int intSplit = totalBill.toInt() ~/ people;
   int remainder = totalBill.toInt() % people;
 
-  print('Total: \$totalBill');
-  print('Split: \$split');
-  print('Integer Split: \$intSplit');
-  print('Remainder: \$remainder');
+  print('Total: $totalBill');
+  print('Split: $split');
+  print('Integer Split: $intSplit');
+  print('Remainder: $remainder');
 }
 ```
 
+### Solution 2: Access Control
+
 ```dart
-// Assignment 2 Solution
 void main() {
   int age = 20;
   bool hasId = true;
@@ -135,20 +136,21 @@ void main() {
   // Logic: (Age >= 18) AND (Has ID) AND (NOT Banned)
   bool canEnter = (age >= 18) && hasId && !isBanned;
 
-  print('Age: \$age, Has ID: \$hasId, Banned: \$isBanned');
-  print('Can enter: \$canEnter');
+  print('Age: $age, Has ID: $hasId, Banned: $isBanned');
+  print('Can enter: $canEnter');
 }
 ```
 
+### Solution 3: Profile Settings
+
 ```dart
-// Assignment 3 Solution
 void main() {
   String? username;
   String defaultName = "Guest";
 
   // Use default if username is null
   String displayName = username ?? defaultName;
-  print('Display Name: \$displayName');
+  print('Display Name: $displayName');
 
   // Update username only if it is null (it is)
   username ??= "User123";
@@ -160,25 +162,45 @@ void main() {
 }
 ```
 
+### Solution 4: Cascade Builder
+
 ```dart
-// Assignment 4 Solution
-void main() {
-  int score = 95;
-  bool isPass = score >= 50;
-  bool isExcellent = score > 90;
+class Request {
+  String url = '';
+  String method = '';
+  Map<String, String> headers = {};
   
-  print('Pass: $isPass');
-  print('Excellent: $isExcellent');
+  @override
+  String toString() => 'Request(url: $url, method: $method, headers: $headers)';
+}
+
+void main() {
+  var req = Request()
+    ..url = 'https://api.example.com'
+    ..method = 'GET'
+    ..headers['Authorization'] = 'Bearer 123';
+    
+  print(req);
 }
 ```
 
+### Solution 5: Bitwise Permissions
+
 ```dart
-// Assignment 5 Solution
 void main() {
-  int count = 10;
+  const int READ = 1;      // 001
+  const int WRITE = 2;     // 010
+  const int EXECUTE = 4;   // 100
   
-  print(count++); // Prints 10, then increments to 11
-  print(++count); // Increments to 12, then prints 12
-  print(count);   // Prints 12
+  // Grant READ and WRITE
+  int userPerms = READ | WRITE; // 011 = 3
+  
+  print('User Permissions: $userPerms');
+  
+  bool hasWrite = (userPerms & WRITE) == WRITE; // or != 0
+  print('Has Write Access: $hasWrite');
+  
+  bool hasExecute = (userPerms & EXECUTE) == EXECUTE;
+  print('Has Execute Access: $hasExecute');
 }
 ```

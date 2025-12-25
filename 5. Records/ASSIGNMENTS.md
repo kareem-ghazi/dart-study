@@ -70,48 +70,54 @@ Items are equal: true
 
 ---
 
-## Assignment 4: Simple Destructuring
+## Assignment 4: Pattern Matching in Switch (Advanced)
 
 **Objective:**
-Practice unpacking record fields into variables directly.
-*(الهدف: التدرب على تفكيك حقول السجل إلى متغيرات مباشرة.)*
+Use records and patterns in switch statements (Dart 3+).
+*(الهدف: استخدام السجلات والأنماط في عبارات switch (Dart 3+).)*
 
 **Instructions:**
-1. Create a record `(10, 20)`.
-2. Destructure it into two variables `x` and `y` in one line.
-3. Print `x` and `y`.
+1. Create a function `executeCommand((String, int) command)`.
+2. Use a `switch` statement on the record:
+   - Case `('create', var id)`: Print "Creating ID: $id".
+   - Case `('delete', var id)`: Print "Deleting ID: $id".
+   - Case `(_, _)` (Wildcard): Print "Unknown command".
+3. Call it with `('create', 50)` and `('update', 10)`.
 
 **Expected Output:**
 ```
-x: 10, y: 20
+Creating ID: 50
+Unknown command
 ```
 
 ---
 
-## Assignment 5: Record Type Return
+## Assignment 5: JSON Parsing with Typed Records (Advanced)
 
 **Objective:**
-Define a function that explicitly specifies a record return type.
-*(الهدف: تعريف دالة تحدد صراحة نوع إرجاع السجل.)*
+Simulate parsing untyped JSON data into strongly typed records.
+*(الهدف: محاكاة تحليل بيانات JSON غير المصنفة إلى سجلات قوية النوع.)*
 
 **Instructions:**
-1. Write a function `swap((int, int) record)` that takes a record of two ints.
-2. It should return a record `(int, int)` with the values swapped.
-3. Call it with `(1, 2)` and print the result.
+1. Create a variable `json` (Map<String, dynamic>) with `{'lat': 10.5, 'long': 20.0}`.
+2. Create a function `parseLocation` that takes a `Map<String, dynamic>`.
+3. It should return a record `(double lat, double long)`.
+4. Inside, cast the map values to `double` (e.g., `json['lat'] as double`).
+5. Print the returned record.
 
 **Expected Output:**
 ```
-(2, 1)
+(10.5, 20.0)
 ```
 
 ---
 
 ## Solutions
 
+### Solution 1: User Profile
+
 ```dart
 void main() {
-  // --- Assignment 1 Solution ---
-  print('--- Assignment 1 ---');
   // Creating the record
   var userProfile = ('John', 'Doe', age: 30, isAdmin: true);
 
@@ -119,11 +125,13 @@ void main() {
   print('User: ${userProfile.$1} ${userProfile.$2}');
   print('Age: ${userProfile.age}');
   print('Admin: ${userProfile.isAdmin}');
-  
-  print('\n');
+}
+```
 
-  // --- Assignment 2 Solution ---
-  print('--- Assignment 2 ---');
+### Solution 2: Coordinate Converter
+
+```dart
+void main() {
   // Function returning a record with named fields
   ({double lat, double long}) getLatLong(String city) {
     if (city == 'Cairo') return (lat: 30.0444, long: 31.2357);
@@ -138,11 +146,13 @@ void main() {
   print('City: Cairo');
   print('Latitude: $lat');
   print('Longitude: $long');
+}
+```
 
-  print('\n');
+### Solution 3: Product Inventory Comparator
 
-  // --- Assignment 3 Solution ---
-  print('--- Assignment 3 ---');
+```dart
+void main() {
   // Record 1
   var warehouseItem = (id: 101, name: "Laptop", price: 999.99);
   
@@ -156,18 +166,43 @@ void main() {
 
   // Record 3: Different shape (positional)
   var newItem = (101, "Laptop", 999.99);
-  // warehouseItem == newItem; // This would be a compile-time error or always false depending on context
-  // Because they have different shapes (types).
-
-  // --- Assignment 4 Solution ---
-  print('--- Assignment 4 ---');
-  var (x, y) = (10, 20);
-  print('x: $x, y: $y');
-
-  // --- Assignment 5 Solution ---
-  print('--- Assignment 5 ---');
-  (int, int) swap((int, int) record) {
-    return (record.$2, record.$1);
-  }
-  print(swap((1, 2)));
+  // warehouseItem == newItem; // Error: Different types
 }
+```
+
+### Solution 4: Pattern Matching in Switch
+
+```dart
+void executeCommand((String, int) command) {
+  switch (command) {
+    case ('create', var id):
+      print('Creating ID: $id');
+    case ('delete', var id):
+      print('Deleting ID: $id');
+    case (_, _):
+      print('Unknown command');
+  }
+}
+
+void main() {
+  executeCommand(('create', 50));
+  executeCommand(('update', 10));
+}
+```
+
+### Solution 5: JSON Parsing with Typed Records
+
+```dart
+(double, double) parseLocation(Map<String, dynamic> json) {
+  return (
+    json['lat'] as double,
+    json['long'] as double
+  );
+}
+
+void main() {
+  var json = {'lat': 10.5, 'long': 20.0};
+  var location = parseLocation(json);
+  print(location);
+}
+```

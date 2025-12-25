@@ -57,52 +57,54 @@ Uncaught Error: Assertion failed: "Age must be positive"
 
 ---
 
-## Assignment 4: Format Exception (Parsing error)
+## Assignment 4: Rethrowing with StackTrace (Advanced)
 
 **Objective:**
-Handle errors when converting strings to numbers.
-*(الهدف: معالجة الأخطاء عند تحويل النصوص إلى أرقام.)*
+Catch an error, log it, and rethrow it preserving the stack trace.
+*(الهدف: التقاط خطأ، تسجيله، وإعادة رميه مع الحفاظ على تتبع المكدس.)*
 
 **Instructions:**
-1. Create a function `parseNumber(String text)`.
-2. Try to parse it using `int.parse(text)`.
-3. Catch `FormatException` and return -1.
-4. Call it with "123" and "abc".
+1. Create a function `riskyOperation()` that throws `Exception("Crash")`.
+2. Wrap it in a `try-catch` block that catches both the error object `e` and the stack trace `s`.
+3. Print "Log: Error occurred".
+4. Use `rethrow` to propagate the error.
+5. In `main`, call this function inside another try-catch to finally handle it and print "Handled in main".
 
 **Expected Output:**
 ```
-123
--1
+Log: Error occurred
+Handled in main
 ```
 
 ---
 
-## Assignment 5: Finally Cleanup (Resource management)
+## Assignment 5: Custom Exception Hierarchy (Advanced)
 
 **Objective:**
-Use the `finally` block.
-*(الهدف: استخدام كتلة `finally`.)*
+Create and handle a hierarchy of custom exceptions.
+*(الهدف: إنشاء ومعالجة تسلسل هرمي للاستثناءات المخصصة.)*
 
 **Instructions:**
-1. Write a try-catch-finally block.
-2. In try, print "Opening file...".
-3. In try, throw an exception "File corrupted".
-4. In catch, print "Error detected".
-5. In finally, print "Closing file...".
+1. Create a base class `NetworkException` implements `Exception`.
+2. Create a subclass `TimeoutException` extends `NetworkException`.
+3. Create a function `fetchData()` that throws `TimeoutException()`.
+4. In `main`, use `try-catch`.
+5. Add a `on TimeoutException` block to print "Request timed out".
+6. Add a `on NetworkException` block to print "General network error" (to show it catches subclasses if checked first, but here put it second).
+7. Add a generic `catch` block.
 
 **Expected Output:**
 ```
-Opening file...
-Error detected
-Closing file...
+Request timed out
 ```
 
 ---
 
 ## Solutions
 
+### Solution 1: Safe Division
+
 ```dart
-// Assignment 1
 void divide(int a, int b) {
   try {
     print(a ~/ b);
@@ -113,13 +115,16 @@ void divide(int a, int b) {
   }
 }
 
-void assignment1() {
+void main() {
   print('--- Safe Division ---');
   divide(10, 2);
   divide(10, 0);
 }
+```
 
-// Assignment 2
+### Solution 2: Custom Authentication Error
+
+```dart
 class AuthException implements Exception {
   final String message;
   AuthException(this.message);
@@ -135,7 +140,7 @@ void login(String password) {
   print('Login success!');
 }
 
-void assignment2() {
+void main() {
   print('\n--- Auth System ---');
   try {
     login('guest');
@@ -143,14 +148,17 @@ void assignment2() {
     print('Authentication Failed: ${e.message}');
   }
 }
+```
 
-// Assignment 3
+### Solution 3: Development Checks
+
+```dart
 class Person {
   final int age;
   Person(this.age) : assert(age >= 0, 'Age must be positive');
 }
 
-void assignment3() {
+void main() {
   print('\n--- Assert Check ---');
   try {
     var p = Person(-5);
@@ -159,39 +167,49 @@ void assignment3() {
     print('Caught assertion error: $e');
   }
 }
+```
 
-// Assignment 4
-int parseNumber(String text) {
-  try {
-    return int.parse(text);
-  } on FormatException {
-    return -1;
-  }
-}
+### Solution 4: Rethrowing with StackTrace
 
-// Assignment 5
-void assignment5() {
+```dart
+void riskyOperation() {
   try {
-    print("Opening file...");
-    throw Exception("File corrupted");
-  } catch (e) {
-    print("Error detected");
-  } finally {
-    print("Closing file...");
+    throw Exception("Crash");
+  } catch (e, s) {
+    print("Log: Error occurred");
+    // print(s); // Optional: print stack trace
+    rethrow;
   }
 }
 
 void main() {
-  assignment1();
-  assignment2();
-  // Note: Assertions might be disabled in production/some environments
-  assignment3(); 
-  
-  print('\n--- Assignment 4 ---');
-  print(parseNumber("123"));
-  print(parseNumber("abc"));
+  try {
+    riskyOperation();
+  } catch (e) {
+    print("Handled in main");
+  }
+}
+```
 
-  print('\n--- Assignment 5 ---');
-  assignment5();
+### Solution 5: Custom Exception Hierarchy
+
+```dart
+class NetworkException implements Exception {}
+class TimeoutException extends NetworkException {}
+
+void fetchData() {
+  throw TimeoutException();
+}
+
+void main() {
+  try {
+    fetchData();
+  } on TimeoutException {
+    print("Request timed out");
+  } on NetworkException {
+    print("General network error");
+  } catch (e) {
+    print("Unknown error");
+  }
 }
 ```
