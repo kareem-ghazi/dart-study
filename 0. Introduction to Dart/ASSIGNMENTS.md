@@ -67,6 +67,49 @@ Liftoff!
 
 ---
 
+## Assignment 4: Simple Math (Function & Return)
+
+**Objective:**
+Practice defining functions with return values.
+*(الهدف: التدرب على تعريف الدوال ذات القيم المرجعة.)*
+
+**Instructions:**
+1. Define a function `add(int a, int b)` that returns the sum of two integers.
+2. Define a function `subtract(int a, int b)` that returns the difference.
+3. In `main`, call both functions with numbers 10 and 5.
+4. Print the results.
+
+**Expected Output:**
+```
+Sum: 15
+Difference: 5
+```
+
+---
+
+## Assignment 5: String Manipulation (Methods)
+
+**Objective:**
+Practice using built-in String methods.
+*(الهدف: التدرب على استخدام دوال النصوص المدمجة.)*
+
+**Instructions:**
+1. Create a string variable `message` with the value " Hello Dart! ".
+2. Print the string in uppercase.
+3. Print the string in lowercase.
+4. Print the string with whitespace removed (trimmed).
+5. Check if the string contains "Dart" and print the boolean result.
+
+**Expected Output:**
+```
+ HELLO DART! 
+ hello dart! 
+Hello Dart!
+Contains 'Dart': true
+```
+
+---
+
 ## Solutions
 
 ### Solution 1: Spacecraft Inventory
@@ -146,5 +189,35 @@ void main() async {
   } catch (e) {
     print('Error: $e');
   }
+}
+```
+
+### Solution 4: Simple Math
+
+```dart
+int add(int a, int b) {
+  return a + b;
+}
+
+int subtract(int a, int b) {
+  return a - b;
+}
+
+void main() {
+  print('Sum: ${add(10, 5)}');
+  print('Difference: ${subtract(10, 5)}');
+}
+```
+
+### Solution 5: String Manipulation
+
+```dart
+void main() {
+  String message = " Hello Dart! ";
+  
+  print(message.toUpperCase());
+  print(message.toLowerCase());
+  print(message.trim());
+  print('Contains \'Dart\': ${message.contains('Dart')}');
 }
 ```

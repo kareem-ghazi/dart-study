@@ -64,6 +64,45 @@ Error: Unsupported operation: Cannot add to an unmodifiable list
 
 ---
 
+## Assignment 4: Temperature Converter (Type conversion)
+
+**Objective:**
+Practice variable declaration and simple arithmetic.
+*(الهدف: التدرب على تعريف المتغيرات والحسابات البسيطة.)*
+
+**Instructions:**
+1. Declare a `double` variable `celsius` and assign it `25.0`.
+2. Calculate Fahrenheit using the formula: `(celsius * 9 / 5) + 32`.
+3. Store the result in a variable `fahrenheit`.
+4. Print the result.
+
+**Expected Output:**
+```
+25.0 Celsius is 77.0 Fahrenheit
+```
+
+---
+
+## Assignment 5: Variable Swapping (Logic)
+
+**Objective:**
+Practice manipulating variable values.
+*(الهدف: التدرب على التعامل مع قيم المتغيرات.)*
+
+**Instructions:**
+1. Declare two integer variables `a = 5` and `b = 10`.
+2. Swap their values so `a` becomes 10 and `b` becomes 5.
+3. You can use a temporary variable `temp`.
+4. Print the values before and after swapping.
+
+**Expected Output:**
+```
+Before: a=5, b=10
+After: a=10, b=5
+```
+
+---
+
 ## Solutions
 
 ### Solution 1: Profile Creator
@@ -124,5 +163,32 @@ void main() {
   } catch (e) {
     print('Error: $e');
   }
+}
+```
+
+### Solution 4: Temperature Converter
+
+```dart
+void main() {
+  double celsius = 25.0;
+  double fahrenheit = (celsius * 9 / 5) + 32;
+  print('$celsius Celsius is $fahrenheit Fahrenheit');
+}
+```
+
+### Solution 5: Variable Swapping
+
+```dart
+void main() {
+  int a = 5;
+  int b = 10;
+  
+  print('Before: a=$a, b=$b');
+  
+  int temp = a;
+  a = b;
+  b = temp;
+  
+  print('After: a=$a, b=$b');
 }
 ```

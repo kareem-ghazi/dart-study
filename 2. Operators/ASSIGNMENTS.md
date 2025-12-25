@@ -64,6 +64,48 @@ Welcome back!
 
 ---
 
+## Assignment 4: Grade Checker (Relational & Logical)
+
+**Objective:**
+Use relational and logical operators to determine grades.
+*(الهدف: استخدام المعاملات العلاقية والمنطقية لتحديد الدرجات.)*
+
+**Instructions:**
+1. Define an integer `score`.
+2. Create a boolean `isPass` that is true if `score` is greater than or equal to 50.
+3. Create a boolean `isExcellent` that is true if `score` is greater than 90.
+4. Print the results.
+
+**Expected Output (for score 95):**
+```
+Pass: true
+Excellent: true
+```
+
+---
+
+## Assignment 5: Increment/Decrement (Unary)
+
+**Objective:**
+Practice using prefix and postfix increment/decrement operators.
+*(الهدف: التدرب على استخدام معاملات الزيادة والنقصان القبلية والبعدية.)*
+
+**Instructions:**
+1. Define a variable `count = 10`.
+2. Print `count++` (postfix).
+3. Print `++count` (prefix).
+4. Print `count`.
+5. Observe the differences.
+
+**Expected Output:**
+```
+10
+12
+12
+```
+
+---
+
 ## Solutions
 
 ```dart
@@ -115,5 +157,28 @@ void main() {
   // Ternary check
   String message = (username != null) ? "Welcome back!" : "Please log in";
   print(message);
+}
+```
+
+```dart
+// Assignment 4 Solution
+void main() {
+  int score = 95;
+  bool isPass = score >= 50;
+  bool isExcellent = score > 90;
+  
+  print('Pass: $isPass');
+  print('Excellent: $isExcellent');
+}
+```
+
+```dart
+// Assignment 5 Solution
+void main() {
+  int count = 10;
+  
+  print(count++); // Prints 10, then increments to 11
+  print(++count); // Increments to 12, then prints 12
+  print(count);   // Prints 12
 }
 ```

@@ -70,6 +70,42 @@ Items are equal: true
 
 ---
 
+## Assignment 4: Simple Destructuring
+
+**Objective:**
+Practice unpacking record fields into variables directly.
+*(الهدف: التدرب على تفكيك حقول السجل إلى متغيرات مباشرة.)*
+
+**Instructions:**
+1. Create a record `(10, 20)`.
+2. Destructure it into two variables `x` and `y` in one line.
+3. Print `x` and `y`.
+
+**Expected Output:**
+```
+x: 10, y: 20
+```
+
+---
+
+## Assignment 5: Record Type Return
+
+**Objective:**
+Define a function that explicitly specifies a record return type.
+*(الهدف: تعريف دالة تحدد صراحة نوع إرجاع السجل.)*
+
+**Instructions:**
+1. Write a function `swap((int, int) record)` that takes a record of two ints.
+2. It should return a record `(int, int)` with the values swapped.
+3. Call it with `(1, 2)` and print the result.
+
+**Expected Output:**
+```
+(2, 1)
+```
+
+---
+
 ## Solutions
 
 ```dart
@@ -122,4 +158,16 @@ void main() {
   var newItem = (101, "Laptop", 999.99);
   // warehouseItem == newItem; // This would be a compile-time error or always false depending on context
   // Because they have different shapes (types).
+
+  // --- Assignment 4 Solution ---
+  print('--- Assignment 4 ---');
+  var (x, y) = (10, 20);
+  print('x: $x, y: $y');
+
+  // --- Assignment 5 Solution ---
+  print('--- Assignment 5 ---');
+  (int, int) swap((int, int) record) {
+    return (record.$2, record.$1);
+  }
+  print(swap((1, 2)));
 }

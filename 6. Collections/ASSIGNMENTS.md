@@ -68,6 +68,43 @@ Combined List: [0, 1, 2, 3, 4, 6, 99]
 
 ---
 
+## Assignment 4: Map Values
+
+**Objective:**
+Practice iterating over map values.
+*(الهدف: التدرب على التكرار عبر قيم الخريطة.)*
+
+**Instructions:**
+1. Create a map of student names and their scores: `{'Ali': 90, 'Bob': 80}`.
+2. Iterate through the values using a loop.
+3. Print each score.
+
+**Expected Output:**
+```
+90
+80
+```
+
+---
+
+## Assignment 5: List Filtering
+
+**Objective:**
+Use the `.where` method to filter a list.
+*(الهدف: استخدام دالة `.where` لتصفية قائمة.)*
+
+**Instructions:**
+1. Create a list of numbers `[5, 12, 8, 20, 3]`.
+2. Use `.where` to create a new list containing only numbers greater than 10.
+3. Print the new list.
+
+**Expected Output:**
+```
+[12, 20]
+```
+
+---
+
 ## Solutions
 
 ```dart
@@ -112,5 +149,18 @@ void main() {
   ];
 
   print('Combined List: $combinedList');
+
+  // --- Assignment 4 Solution ---
+  print('--- Assignment 4 ---');
+  var scores = {'Ali': 90, 'Bob': 80};
+  for (var score in scores.values) {
+    print(score);
+  }
+
+  // --- Assignment 5 Solution ---
+  print('--- Assignment 5 ---');
+  var numbers = [5, 12, 8, 20, 3];
+  var filtered = numbers.where((n) => n > 10).toList();
+  print(filtered);
 }
 ```

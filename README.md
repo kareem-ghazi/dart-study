@@ -31,8 +31,27 @@ Each topic is organized into its own numbered folder (e.g., `0. Introduction to 
     *   Writing reusable type-safe code (`<T>`), generic collections, and methods.
 9.  **[8. Typedef](./8.%20Typedef)**
     *   Creating type aliases for function signatures and complex types.
+
+---
+
+### 🏆 [Project Milestone 1](./Project%20Milestone%201)
+A comprehensive **Personal Finance Tracker** project that combines everything learned from **Variables** to **Typedefs**.
+*   **Concepts:** Records, Collections, Generics, and strict Typing.
+
+---
+
 10. **[9. The Dart type system](./9.%20The%20Dart%20type%20system)**
     *   Soundness, type inference, type safety, and the `covariant` keyword.
+11. **[10. Patterns](./10.%20Patterns)**
+    *   Matching and destructuring data structures.
+12. **[11. Pattern types](./11.%20Pattern%20types)**
+    *   Logical, Relational, Collection, and Object patterns.
+13. **[12. Loops](./12.%20Loops)**
+    *   `for`, `while`, `do-while` loops, and `break`/`continue`.
+14. **[13. Branches](./13.%20Branches)**
+    *   `if`, `if-case`, `switch` statements, and `switch` expressions.
+15. **[14. Error handling](./14.%20Error%20handling)**
+    *   Exceptions, `try-catch`, `finally`, and `assert`.
 
 ## 🚀 How to Use
 

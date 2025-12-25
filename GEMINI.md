@@ -40,3 +40,50 @@ Processed the "4. Built-in types" folder to generate the missing files based on 
     - `4. Built-in types\ASSIGNMENTS.md` (Assignments and solutions)
 
 All tasks completed successfully.
+
+## Task: Generate Files for Topics 10-14 and Update README
+
+Date: Thursday, December 25, 2025
+
+### Summary
+Processed the remaining folders (10 through 14) to generate the required study files (`PAGE.md`, `NOTES.md`, `ASSIGNMENTS.md`) based on their `RAW.md` content.
+
+- **Folders Processed:**
+    - `10. Patterns`
+    - `11. Pattern types`
+    - `12. Loops`
+    - `13. Branches`
+    - `14. Error handling`
+
+- **Updates:**
+    - Updated `README.md` to include the new topics in the Table of Contents.
+    - Updated `GEMINI.md` with this execution report.
+
+All tasks completed successfully.
+
+## Task: Add Extra Assignments
+
+Date: Thursday, December 25, 2025
+
+### Summary
+Updated `ASSIGNMENTS.md` in all folders (0 through 14) to include two additional assignments (Assignment 4 and Assignment 5) along with their solutions.
+
+- **Scope:** All 15 topic folders.
+- **Action:** Appended new assignments and updated solution sections.
+
+All tasks completed successfully.
+
+## Task: Create Project Milestone 1
+
+Date: Thursday, December 25, 2025
+
+### Summary
+Created a new folder `Project Milestone 1` containing a comprehensive project task that consolidates concepts from folders 1 through 8.
+
+- **Files Created:**
+    - `PROJECT.md`: Instructions for a "Personal Finance Tracker".
+    - `SOLUTION.md`: Full Dart implementation.
+- **Updates:**
+    - Updated `README.md` to link to the new milestone.
+
+All tasks completed successfully.

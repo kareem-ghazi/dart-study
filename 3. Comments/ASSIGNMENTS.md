@@ -74,6 +74,38 @@ Write professional `///` documentation comments with references.
 
 ---
 
+## Assignment 4: TODO Tracker (TODO comments)
+
+**Objective:**
+Practice using `TODO` comments to mark future tasks.
+*(الهدف: التدرب على استخدام تعليقات `TODO` لتمييز المهام المستقبلية.)*
+
+**Instructions:**
+1. Create a function `void notImplementedYet()`.
+2. Inside, add a `// TODO:` comment saying "Implement this function later".
+3. Print "Function is empty for now".
+
+**Expected Output:**
+(No change in output, just the comment in code)
+
+---
+
+## Assignment 5: Deprecation Notice (Annotation comments)
+
+**Objective:**
+Use documentation comments to mark a method as deprecated.
+*(الهدف: استخدام تعليقات التوثيق لتمييز دالة كمهملة.)*
+
+**Instructions:**
+1. Create a function `oldMethod()`.
+2. Add a documentation comment `///` saying "This method is deprecated, use [newMethod] instead."
+3. Add the `@deprecated` annotation before the function.
+
+**Expected Output:**
+(No output change, but editors will strike through the method name if used)
+
+---
+
 ## Solutions
 
 ```dart
@@ -127,5 +159,30 @@ class Calculator {
 void main() {
   Calculator calc = Calculator();
   print(calc.add(5, 3));
+}
+```
+
+```dart
+// Assignment 4 Solution
+void notImplementedYet() {
+  // TODO: Implement this function later
+  print("Function is empty for now");
+}
+
+void main() {
+  notImplementedYet();
+}
+```
+
+```dart
+// Assignment 5 Solution
+/// This method is deprecated, use [newMethod] instead.
+@deprecated
+void oldMethod() {
+  print("Old method");
+}
+
+void main() {
+  oldMethod();
 }
 ```

@@ -66,12 +66,52 @@ Use the `covariant` keyword to enforce stricter parameter types in subclasses.
 6.  In `main`, create a `DogTrainer`.
 7.  Try to pass a `Dog` (should work).
 8.  Try to pass a generic `Animal` (cast it as dynamic or ignore type warning to see runtime error, or just wrap in try-catch).
-**(1. عرّف فئات `Animal` و `Dog`. 2. عرّف `Trainer` بدالة تقبل `Animal`. 3. عرّف `DogTrainer` وأعد تعريف الدالة لتقبل `Dog` فقط باستخدام `covariant`. 4. جرب تمرير `Dog`. 5. جرب تمرير `Animal` ولاحظ النتيجة.)**
+**(1. عرّف فئات `Animal` و `Dog`. 2. عرّف `Trainer` بدالة تقبل `Animal`. 3. عرّف `DogTrainer` وأعد تعريف الدالة لتقبل `Dog` فقط باستخدام ` covariant`. 4. جرب تمرير `Dog`. 5. جرب تمرير `Animal` ولاحظ النتيجة.)**
 
 **Expected Output:**
 ```
 Training a dog...
 Error: type 'Animal' is not a subtype of type 'Dog' in type cast
+```
+
+---
+
+## Assignment 4: Dynamic vs Object
+
+**Objective:**
+Understand the difference between `dynamic` and `Object`.
+*(الهدف: فهم الفرق بين `dynamic` و `Object`.)*
+
+**Instructions:**
+1. Declare a variable `dynamic d = 'hello'`.
+2. Declare a variable `Object o = 'hello'`.
+3. Try to print `d.length` (valid).
+4. Try to print `o.length` (invalid, comment it out).
+5. Print `d` and `o`.
+
+**Expected Output:**
+```
+5
+hello
+hello
+```
+
+---
+
+## Assignment 5: Type Casting
+
+**Objective:**
+Practice manual type casting using `as`.
+*(الهدف: التدرب على التحويل اليدوي للأنواع باستخدام `as`.)*
+
+**Instructions:**
+1. Declare `Object x = "Dart"`.
+2. Cast `x` to `String` and store it in `String s`.
+3. Print `s.toUpperCase()`.
+
+**Expected Output:**
+```
+DART
 ```
 
 ---
@@ -155,5 +195,20 @@ void main() {
   } catch (e) {
     print("Error caught: $e");
   }
+
+  // --- Assignment 4 Solution ---
+  print('--- Assignment 4 ---');
+  dynamic d = 'hello';
+  Object o = 'hello';
+  print(d.length);
+  // print(o.length); // Error
+  print(d);
+  print(o);
+
+  // --- Assignment 5 Solution ---
+  print('--- Assignment 5 ---');
+  Object x = "Dart";
+  String s = x as String;
+  print(s.toUpperCase());
 }
 ```

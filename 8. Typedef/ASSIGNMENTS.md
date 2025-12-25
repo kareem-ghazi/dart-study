@@ -62,6 +62,42 @@ Result: 5
 
 ---
 
+## Assignment 4: Callback Alias
+
+**Objective:**
+Create a type alias for a void callback function.
+*(الهدف: إنشاء اسم مستعار لدالة إرجاع (callback) لا ترجع قيمة.)*
+
+**Instructions:**
+1. Define a typedef `Logger` for `void Function(String msg)`.
+2. Create a function `process(Logger log)` that calls `log("Done")`.
+3. Pass a print function (wrapped) to `process`.
+
+**Expected Output:**
+```
+Done
+```
+
+---
+
+## Assignment 5: Integer List Alias
+
+**Objective:**
+Alias a specific List type.
+*(الهدف: تسمية نوع قائمة محدد.)*
+
+**Instructions:**
+1. Define `IntList` as `List<int>`.
+2. Create an `IntList` with values `[1, 2, 3]`.
+3. Print the list.
+
+**Expected Output:**
+```
+[1, 2, 3]
+```
+
+---
+
 ## Solutions
 
 ```dart
@@ -74,12 +110,23 @@ typedef Classroom = Map<String, List<String>>;
 // --- Assignment 3 Typedef ---
 typedef MathOp = int Function(int a, int b);
 
+// --- Assignment 4 Typedef ---
+typedef Logger = void Function(String msg);
+
+// --- Assignment 5 Typedef ---
+typedef IntList = List<int>;
+
 // --- Assignment 3 Functions ---
 int multiply(int a, int b) => a * b;
 int divide(int a, int b) => a ~/ b;
 
 void perform(int x, int y, MathOp op) {
   print('Result: ${op(x, y)}');
+}
+
+// --- Assignment 4 Function ---
+void process(Logger log) {
+  log("Done");
 }
 
 void main() {
@@ -101,5 +148,14 @@ void main() {
   print('--- Assignment 3 ---');
   perform(10, 2, multiply);
   perform(10, 2, divide);
+
+  // --- Assignment 4 Solution ---
+  print('--- Assignment 4 ---');
+  process((msg) => print(msg));
+
+  // --- Assignment 5 Solution ---
+  print('--- Assignment 5 ---');
+  IntList list = [1, 2, 3];
+  print(list);
 }
 ```

@@ -65,6 +65,45 @@ Swapped Ints: [1, 3, 2]
 
 ---
 
+## Assignment 4: Generic Pair
+
+**Objective:**
+Create a Generic Pair class holding two values of the same type.
+*(الهدف: إنشاء فئة Pair عامة تحتوي على قيمتين من نفس النوع.)*
+
+**Instructions:**
+1. Define a class `Pair<T>`.
+2. Add two fields `first` and `second` of type `T`.
+3. Create a constructor.
+4. Create a `Pair<int>` with 10 and 20.
+5. Print both values.
+
+**Expected Output:**
+```
+10, 20
+```
+
+---
+
+## Assignment 5: Generic Printer
+
+**Objective:**
+Write a generic function that prints details about the type.
+*(الهدف: كتابة دالة عامة تطبع تفاصيل حول النوع.)*
+
+**Instructions:**
+1. Write a function `printDetails<T>(T value)`.
+2. It should print the value and its runtime type.
+3. Call it with a string and an integer.
+
+**Expected Output:**
+```
+Value: Hello, Type: String
+Value: 100, Type: int
+```
+
+---
+
 ## Solutions
 
 ```dart
@@ -79,6 +118,13 @@ class Box<T> {
   T get() {
     return _value;
   }
+}
+
+// --- Assignment 4 Class ---
+class Pair<T> {
+  final T first;
+  final T second;
+  Pair(this.first, this.second);
 }
 
 // --- Assignment 1 Helper ---
@@ -98,6 +144,11 @@ void swapValues<T>(List<T> list, int i1, int i2) {
     list[i1] = list[i2];
     list[i2] = temp;
   }
+}
+
+// --- Assignment 5 Helper ---
+void printDetails<T>(T value) {
+  print('Value: $value, Type: ${value.runtimeType}');
 }
 
 void main() {
@@ -128,5 +179,16 @@ void main() {
   var numbers = [1, 2, 3];
   swapValues(numbers, 1, 2);
   print('Swapped Ints: $numbers');
+  print('\n');
+
+  // --- Assignment 4 Solution ---
+  print('--- Assignment 4 ---');
+  var pair = Pair(10, 20);
+  print('${pair.first}, ${pair.second}');
+
+  // --- Assignment 5 Solution ---
+  print('--- Assignment 5 ---');
+  printDetails('Hello');
+  printDetails(100);
 }
 ```

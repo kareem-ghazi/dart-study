@@ -64,6 +64,44 @@ Runes: 12
 
 ---
 
+## Assignment 4: List Basics (List type)
+
+**Objective:**
+Practice basic List operations.
+*(الهدف: التدرب على عمليات القائمة الأساسية.)*
+
+**Instructions:**
+1. Create a list of integers `numbers = [1, 2, 3]`.
+2. Add the number 4 to the list.
+3. Remove the number 2.
+4. Print the final list.
+
+**Expected Output:**
+```
+[1, 3, 4]
+```
+
+---
+
+## Assignment 5: Boolean Logic (Bool type)
+
+**Objective:**
+Practice working with boolean values.
+*(الهدف: التدرب على العمل مع القيم المنطقية.)*
+
+**Instructions:**
+1. Define `bool isRaining = true`.
+2. Define `bool hasUmbrella = false`.
+3. Create a variable `willGetWet` that is true if it is raining AND you do not have an umbrella.
+4. Print "Will I get wet? [result]".
+
+**Expected Output:**
+```
+Will I get wet? true
+```
+
+---
+
 ## Solutions
 
 ### Solution 1: The Simple Receipt
@@ -116,5 +154,26 @@ void main() {
   
   // .runes.length counts the actual Unicode points
   print('Runes: ${sentence.runes.length}');
+}
+```
+
+### Solution 4: List Basics
+```dart
+void main() {
+  List<int> numbers = [1, 2, 3];
+  numbers.add(4);
+  numbers.remove(2);
+  print(numbers);
+}
+```
+
+### Solution 5: Boolean Logic
+```dart
+void main() {
+  bool isRaining = true;
+  bool hasUmbrella = false;
+  
+  bool willGetWet = isRaining && !hasUmbrella;
+  print('Will I get wet? $willGetWet');
 }
 ```
