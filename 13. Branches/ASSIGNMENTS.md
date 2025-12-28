@@ -90,26 +90,30 @@ Loading...
 
 ---
 
-## Assignment 5: Guard Clauses with Patterns (Advanced)
+## Assignment 5: State Machine Parser (Expert)
 
 **Objective:**
-Use `when` clauses to add conditions to switch cases.
-*(الهدف: استخدام عبارات `when` لإضافة شروط إلى حالات switch.)*
+Implement a state machine using `switch` expressions to handle transitions based on events.
+*(الهدف: تنفيذ آلة حالة باستخدام تعبيرات `switch` لمعالجة الانتقالات بناءً على الأحداث.)*
 
 **Instructions:**
-1. Create a Record `point = (x, y)`.
-2. Use a switch statement to print:
-   - "Diagonal" if `x == y` (use `case (var x, var y) when x == y`).
-   - "X-Axis" if `y == 0`.
-   - "Y-Axis" if `x == 0`.
-   - "Other" otherwise.
-3. Test with `(5, 5)`, `(0, 10)`, `(3, 4)`.
+1.  Define a sealed class `State` (Idle, Active, Error).
+2.  Define a sealed class `Event` (Start, Stop, Fail).
+3.  Write a function `State nextState(State current, Event event)`.
+4.  Use a `switch` expression on `(current, event)` (pair) to define transitions:
+    *   (Idle, Start) -> Active
+    *   (Active, Stop) -> Idle
+    *   (Active, Fail) -> Error
+    *   (Error, Stop) -> Idle
+    *   Anything else -> current (no change).
+5.  Simulate a flow: Idle -> Start -> Fail -> Stop. Print state after each step.
 
 **Expected Output:**
 ```
-Diagonal
-Y-Axis
-Other
+Initial: Idle
+Event Start -> Active
+Event Fail -> Error
+Event Stop -> Idle
 ```
 
 ---
@@ -201,25 +205,41 @@ void main() {
 }
 ```
 
-### Solution 5: Guard Clauses with Patterns
+### Solution 5: State Machine Parser
 
 ```dart
-void checkPoint((int, int) point) {
-  switch (point) {
-    case (var x, var y) when x == y:
-      print('Diagonal');
-    case (_, 0):
-      print('X-Axis');
-    case (0, _):
-      print('Y-Axis');
-    default:
-      print('Other');
-  }
+sealed class State {
+  @override
+  String toString() => runtimeType.toString();
+}
+class Idle extends State {}
+class Active extends State {}
+class Error extends State {}
+
+sealed class Event {}
+class Start extends Event {}
+class Stop extends Event {}
+class Fail extends Event {}
+
+State nextState(State current, Event event) {
+  return switch ((current, event)) {
+    (Idle(), Start()) => Active(),
+    (Active(), Stop()) => Idle(),
+    (Active(), Fail()) => Error(),
+    (Error(), Stop()) => Idle(),
+    _ => current,
+  };
 }
 
 void main() {
-  checkPoint((5, 5));
-  checkPoint((0, 10));
-  checkPoint((3, 4));
+  State current = Idle();
+  print('Initial: $current');
+
+  var events = [Start(), Fail(), Stop()];
+  
+  for (var e in events) {
+    current = nextState(current, e);
+    print('Event ${e.runtimeType} -> $current');
+  }
 }
 ```

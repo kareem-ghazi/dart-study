@@ -92,22 +92,26 @@ Unknown command
 
 ---
 
-## Assignment 5: JSON Parsing with Typed Records (Advanced)
+## Assignment 5: API Response Handler (Expert)
 
 **Objective:**
-Simulate parsing untyped JSON data into strongly typed records.
-*(الهدف: محاكاة تحليل بيانات JSON غير المصنفة إلى سجلات قوية النوع.)*
+Use records to handle complex API return states (Success, Error, Loading) generically.
+*(الهدف: استخدام السجلات لمعالجة حالات إرجاع API المعقدة (نجاح، خطأ، تحميل) بشكل عام.)*
 
 **Instructions:**
-1. Create a variable `json` (Map<String, dynamic>) with `{'lat': 10.5, 'long': 20.0}`.
-2. Create a function `parseLocation` that takes a `Map<String, dynamic>`.
-3. It should return a record `(double lat, double long)`.
-4. Inside, cast the map values to `double` (e.g., `json['lat'] as double`).
-5. Print the returned record.
+1.  Define a generic function `fetchData<T>(bool success, T data, String errorMsg)`.
+2.  It should return a Record `({bool isSuccess, T? data, String? error})`.
+3.  In `main`, call this function twice:
+    *   Once representing a success (success: true, data: "User Data", error: "").
+    *   Once representing a failure (success: false, data: null, error: "404 Not Found").
+4.  Use **destructuring** inside an `if` statement to handle the result:
+    *   If `isSuccess`, print "Data: [data]".
+    *   Else, print "Error: [error]".
 
 **Expected Output:**
 ```
-(10.5, 20.0)
+Data: User Data
+Error: 404 Not Found
 ```
 
 ---
@@ -190,19 +194,34 @@ void main() {
 }
 ```
 
-### Solution 5: JSON Parsing with Typed Records
+### Solution 5: API Response Handler
 
 ```dart
-(double, double) parseLocation(Map<String, dynamic> json) {
-  return (
-    json['lat'] as double,
-    json['long'] as double
-  );
+({bool isSuccess, T? data, String? error}) fetchData<T>(bool success, T? data, String? errorMsg) {
+  if (success) {
+    return (isSuccess: true, data: data, error: null);
+  } else {
+    return (isSuccess: false, data: null, error: errorMsg);
+  }
 }
 
 void main() {
-  var json = {'lat': 10.5, 'long': 20.0};
-  var location = parseLocation(json);
-  print(location);
+  // Test Case 1: Success
+  var response1 = fetchData<String>(true, "User Data", null);
+  
+  if (response1.isSuccess) {
+    // Note: Dart flow analysis might still see data as T?, so we check or bang (!)
+    print("Data: ${response1.data}");
+  }
+
+  // Test Case 2: Failure
+  var response2 = fetchData<String>(false, null, "404 Not Found");
+  
+  // Destructuring pattern
+  var (:isSuccess, :data, :error) = response2;
+  
+  if (!isSuccess) {
+    print("Error: $error");
+  }
 }
 ```

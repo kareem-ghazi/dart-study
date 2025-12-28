@@ -52,6 +52,18 @@ A comprehensive **Personal Finance Tracker** project that combines everything le
     *   `if`, `if-case`, `switch` statements, and `switch` expressions.
 15. **[14. Error handling](./14.%20Error%20handling)**
     *   Exceptions, `try-catch`, `finally`, and `assert`.
+16. **[15. Functions](./15.%20Functions)**
+    *   Parameters, anonymous functions, closures, and generators.
+17. **[16. Metadata](./16.%20Metadata)**
+    *   Annotations (`@override`, `@Deprecated`) and custom metadata.
+18. **[17. Libraries & imports](./17.%20Libraries%20&%20imports)**
+    *   Importing packages, prefixes, privacy, and deferred loading.
+
+---
+
+### 🏆 [Project Milestone 2](./Project%20Milestone%202)
+A **CLI E-Commerce System** integrating **Functions**, **Error Handling**, **Libraries**, and **Patterns**.
+*   **Concepts:** Modular Architecture, Custom Exceptions, Records for status, and Pattern Matching.
 
 ## 🚀 How to Use
 

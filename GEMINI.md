@@ -87,3 +87,37 @@ Created a new folder `Project Milestone 1` containing a comprehensive project ta
     - Updated `README.md` to link to the new milestone.
 
 All tasks completed successfully.
+
+## Task: Generate Files for Topics 15-17
+
+Date: Sunday, December 28, 2025
+
+### Summary
+Processed the remaining folders (15 through 17) to generate the required study files (`PAGE.md`, `NOTES.md`, `ASSIGNMENTS.md`) based on their `RAW.md` content.
+
+- **Folders Processed:**
+    - `15. Functions`
+    - `16. Metadata`
+    - `17. Libraries & imports`
+
+- **Updates:**
+    - Updated `PROMPT.md` to explicitly require 5 assignments, matching the project's evolving style.
+    - Updated `README.md` to include the new topics in the Table of Contents.
+    - Updated `GEMINI.md` with this execution report.
+
+All tasks completed successfully.
+
+## Task: Create Project Milestone 2
+
+Date: Sunday, December 28, 2025
+
+### Summary
+Created a new folder `Project Milestone 2` containing an advanced "DartMart CLI" project task that integrates concepts from folders 1-8, 10, and 12-17.
+
+- **Files Created:**
+    - `PROJECT.md`: Instructions for the "DartMart CLI" E-Commerce system.
+    - `SOLUTION.md`: Full Dart implementation split into core library and main application logic.
+- **Updates:**
+    - Updated `README.md` to link to the new milestone.
+
+All tasks completed successfully.

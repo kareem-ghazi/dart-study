@@ -84,27 +84,30 @@ Factorial of 25: 15511210043330985984000000
 
 ---
 
-## Assignment 5: Numeric Polymorphism (Advanced)
+## Assignment 5: Binary Protocol Parser (Expert)
 
 **Objective:**
-Understand the `num` type and how to handle `int` and `double` generically.
-*(الهدف: فهم النوع `num` وكيفية التعامل مع `int` و `double` بشكل عام.)*
+Simulate parsing a binary data packet using String manipulation and number conversion.
+*(الهدف: محاكاة تحليل حزمة بيانات ثنائية باستخدام معالجة النصوص وتحويل الأرقام.)*
 
 **Instructions:**
-1. Create a list `List<num> numbers = [10, 3.14, 5, 2.5]`.
-2. Iterate through the list.
-3. For each number, check `is int` or `is double`.
-4. If it's an integer, print "Integer: [value]".
-5. If it's a double, print "Double: [value] (Rounded: [round()])".
-6. Calculate the sum of all numbers.
+1.  Assume a "packet" is a hex string: `"010F48656C6C6F"`.
+    *   Byte 1 (`01`): Packet ID (int).
+    *   Byte 2 (`0F`): Length of the message (int).
+    *   Remaining Bytes (`48656C6C6F`): The message payload (ASCII/UTF-8).
+2.  Write a function `parsePacket(String hex)` that:
+    *   Extracts the ID using `substring` and `int.parse(..., radix: 16)`.
+    *   Extracts the Length.
+    *   Extracts the payload hex substring.
+    *   Converts the payload hex pairs into a list of integers (bytes).
+    *   Decodes the bytes into a String (use `String.fromCharCodes`).
+3.  Print the parsed data nicely.
 
 **Expected Output:**
 ```
-Integer: 10
-Double: 3.14 (Rounded: 3)
-Integer: 5
-Double: 2.5 (Rounded: 3)
-Sum: 20.64
+Packet ID: 1
+Length: 15
+Message: Hello
 ```
 
 ---
@@ -178,20 +181,36 @@ void main() {
 }
 ```
 
-### Solution 5: Numeric Polymorphism
+### Solution 5: Binary Protocol Parser
+
 ```dart
-void main() {
-  List<num> numbers = [10, 3.14, 5, 2.5];
-  num sum = 0;
-  
-  for (var n in numbers) {
-    sum += n;
-    if (n is int) {
-      print('Integer: $n');
-    } else if (n is double) {
-      print('Double: $n (Rounded: ${n.round()})');
-    }
+void parsePacket(String hex) {
+  // 1. Extract Header
+  String idHex = hex.substring(0, 2);
+  String lenHex = hex.substring(2, 4);
+  String payloadHex = hex.substring(4);
+
+  // 2. Parse Integers
+  int id = int.parse(idHex, radix: 16);
+  int length = int.parse(lenHex, radix: 16);
+
+  // 3. Decode Payload
+  List<int> bytes = [];
+  for (int i = 0; i < payloadHex.length; i += 2) {
+    String byteHex = payloadHex.substring(i, i + 2);
+    bytes.add(int.parse(byteHex, radix: 16));
   }
-  print('Sum: $sum');
+  
+  String message = String.fromCharCodes(bytes);
+
+  print('Packet ID: $id');
+  print('Length: $length');
+  print('Message: $message');
+}
+
+void main() {
+  // ID: 01, Len: 15 (Dummy value for this logic), Msg: "Hello" (48 65 6C 6C 6F)
+  String packet = "010F48656C6C6F";
+  parsePacket(packet);
 }
 ```

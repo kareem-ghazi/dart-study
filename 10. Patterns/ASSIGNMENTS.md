@@ -96,22 +96,24 @@ Rectangle
 
 ---
 
-## Assignment 5: JSON List Iteration (Advanced)
+## Assignment 5: Recursive Pattern Matcher (Expert)
 
 **Objective:**
-Destructure objects directly inside a `for-in` loop.
-*(الهدف: تفكيك الكائنات مباشرة داخل حلقة `for-in`.)*
+Traverse and evaluate a tree structure (e.g., Mathematical Expressions) using recursive pattern matching.
+*(الهدف: اجتياز وتقييم هيكل شجري (مثل التعبيرات الرياضية) باستخدام مطابقة الأنماط العودية.)*
 
 **Instructions:**
-1. Create a list of maps: `var users = [{'id': 1, 'name': 'A'}, {'id': 2, 'name': 'B'}]`.
-2. Write a `for` loop that iterates over `users`.
-3. Use the pattern `{'id': id, 'name': name}` directly in the loop definition (e.g., `for (var {...} in users)`).
-4. Print "User [name] has ID [id]".
+1.  Define a class hierarchy for an Expression: `Expr` (abstract), `Number(int value)`, `Add(Expr left, Expr right)`.
+2.  Write a function `int evaluate(Expr e)`.
+3.  Use a switch expression with patterns to:
+    *   Return `value` if `e` is a `Number`.
+    *   Recursively call `evaluate(left) + evaluate(right)` if `e` is `Add`.
+4.  Create an expression `Add(Number(1), Add(Number(2), Number(3)))` (represents 1 + (2 + 3)).
+5.  Evaluate and print the result.
 
 **Expected Output:**
 ```
-User A has ID 1
-User B has ID 2
+Result: 6
 ```
 
 ---
@@ -199,17 +201,34 @@ void main() {
 }
 ```
 
-### Solution 5: JSON List Iteration
+### Solution 5: Recursive Pattern Matcher
 
 ```dart
+abstract class Expr {}
+
+class Number extends Expr {
+  final int value;
+  Number(this.value);
+}
+
+class Add extends Expr {
+  final Expr left;
+  final Expr right;
+  Add(this.left, this.right);
+}
+
+int evaluate(Expr e) {
+  return switch (e) {
+    Number(value: var v) => v,
+    Add(left: var l, right: var r) => evaluate(l) + evaluate(r),
+    _ => 0, // Should handle other cases or throw error
+  };
+}
+
 void main() {
-  var users = [
-    {'id': 1, 'name': 'A'},
-    {'id': 2, 'name': 'B'}
-  ];
+  // 1 + (2 + 3)
+  var expression = Add(Number(1), Add(Number(2), Number(3)));
   
-  for (var {'id': id, 'name': name} in users) {
-    print('User $name has ID $id');
-  }
+  print('Result: ${evaluate(expression)}');
 }
 ```

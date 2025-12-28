@@ -86,23 +86,41 @@ It is an integer: 100
 
 ---
 
-## Assignment 5: Null Safety & Flow Analysis (Advanced)
+## Assignment 5: Variable Lifecycle Simulator (Expert)
 
 **Objective:**
-Master nullable types and flow analysis without using `!`.
-*(الهدف: إتقان الأنواع القابلة للفراغ وتحليل التدفق بدون استخدام `!`.)*
+Simulate a memory management system using `late`, `final`, `const`, and nullable variables to understand lifecycle and state.
+*(الهدف: محاكاة نظام إدارة ذاكرة باستخدام `late`، `final`، `const`، والمتغيرات القابلة للفراغ لفهم دورة الحياة والحالة.)*
 
 **Instructions:**
-1. Create a function `int? getLength(String? str)` that returns the length of the string or null.
-2. Inside the function, use an `if (str == null)` check to return `null`.
-3. After the check, simply return `str.length`. Note that you don't need `?` or `!` because Dart knows `str` cannot be null at this point.
-4. In `main`, call `getLength` with "Test" and `null`.
-5. Use `??` to print "Unknown length" if the result is null.
+1.  Create a class `MemoryBlock` with a `final int id`.
+2.  Create a class `System`.
+3.  Inside `System`, define:
+    *   A `const` configuration Map `{ 'max_memory': 1024 }`.
+    *   A `late String bootLog`.
+    *   A nullable `MemoryBlock? activeBlock`.
+4.  Add a method `boot()`:
+    *   Assign a value to `bootLog`.
+    *   Print `bootLog`.
+5.  Add a method `allocate(int id)`:
+    *   If `activeBlock` is not null, throw exception "Memory leak!".
+    *   Assign a new `MemoryBlock(id)` to `activeBlock`.
+6.  Add a method `free()`:
+    *   Set `activeBlock` to `null`.
+7.  In `main`:
+    *   Create a `System`.
+    *   Try accessing `bootLog` before `boot()` (catch error).
+    *   Boot the system.
+    *   Allocate block 1, try allocating block 2 (catch error), free, allocate block 2.
 
 **Expected Output:**
 ```
-Length: 4
-Length: Unknown length
+Error: LateInitializationError...
+System booting...
+Allocated Block 1
+Error: Memory leak!
+Freed memory.
+Allocated Block 2
 ```
 
 ---
@@ -190,23 +208,61 @@ void main() {
 }
 ```
 
-### Solution 5: Null Safety & Flow Analysis
+### Solution 5: Variable Lifecycle Simulator
 
 ```dart
-int? getLength(String? str) {
-  // Flow analysis works here
-  if (str == null) {
-    return null; 
+class MemoryBlock {
+  final int id;
+  MemoryBlock(this.id);
+}
+
+class System {
+  static const config = {'max_memory': 1024};
+  late String bootLog;
+  MemoryBlock? activeBlock;
+
+  void boot() {
+    bootLog = "System booting at ${DateTime.now()}";
+    print(bootLog);
   }
-  // Dart knows str is NOT null here
-  return str.length;
+
+  void allocate(int id) {
+    if (activeBlock != null) {
+      throw Exception("Memory leak! Block ${activeBlock!.id} not freed.");
+    }
+    activeBlock = MemoryBlock(id);
+    print("Allocated Block $id");
+  }
+
+  void free() {
+    activeBlock = null;
+    print("Freed memory.");
+  }
 }
 
 void main() {
-  var len1 = getLength("Test");
-  var len2 = getLength(null);
-  
-  print('Length: ${len1 ?? "Unknown length"}');
-  print('Length: ${len2 ?? "Unknown length"}');
+  var sys = System();
+
+  // 1. Late Error
+  try {
+    print(sys.bootLog);
+  } catch (e) {
+    print("Error: $e");
+  }
+
+  // 2. Boot
+  sys.boot();
+
+  // 3. Allocation logic
+  try {
+    sys.allocate(1);
+    sys.allocate(2); // Should fail
+  } catch (e) {
+    print("Error: $e");
+  }
+
+  // 4. Proper cycle
+  sys.free();
+  sys.allocate(2);
 }
 ```

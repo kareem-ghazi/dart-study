@@ -62,12 +62,12 @@ End with a technical glossary table (Term, Definition, Arabic Meaning, Example).
 ## **Task 3: Assignments & Solutions**
 
 **Objective:**
-Generate **three (3) practical coding assignments** along with their **solutions** (`ASSIGNMENTS.md`) based on the concepts covered in the `PAGE.md`.
+Generate **five (5) practical coding assignments** along with their **solutions** (`ASSIGNMENTS.md`) based on the concepts covered in the `PAGE.md`.
 
 **Guidelines:**
 
 ### 1. **Assignment Structure**
-For each assignment (1, 2, and 3):
+For each assignment (1 to 5):
 * **Title:** Descriptive title (e.g., "Assignment 1: Temperature Converter").
 * **Objective:** What will the student learn? (English & Arabic).
 * **Instructions:** Step-by-step requirements (English & Arabic).
@@ -78,6 +78,8 @@ For each assignment (1, 2, and 3):
 * **Assignment 1:** Basic (Direct application of concepts).
 * **Assignment 2:** Intermediate (Combining concepts).
 * **Assignment 3:** Advanced (Logic/Problem solving using the concepts).
+* **Assignment 4:** Advanced (Edge cases or deep understanding).
+* **Assignment 5:** Expert (Complex scenario or creative application).
 
 ### 3. **Solutions Section**
 * Place all solutions at the bottom of the file under a `## Solutions` heading.

@@ -97,23 +97,26 @@ String length: 5
 
 ---
 
-## Assignment 5: Runtime Failure Safety (Advanced)
+## Assignment 5: Sound Type System Validator (Expert)
 
 **Objective:**
-Observe how `cast()` works and catch runtime errors when types don't match.
-*(الهدف: ملاحظة كيفية عمل `cast()` والتقاط أخطاء وقت التشغيل عند عدم تطابق الأنواع.)*
+Leverage sound typing, generics, and covariance to build a strictly typed data processor.
+*(الهدف: الاستفادة من الكتابة السليمة، Generics، و Covariance لبناء معالج بيانات صارم النوع.)*
 
 **Instructions:**
-1. Create a `List<dynamic>` named `mixed` containing `[1, 2, "oops", 4]`.
-2. Create a reference `List<int>` named `numbers` by calling `mixed.cast<int>()`. (Note: This doesn't fail *yet*).
-3. Loop through `numbers` and print each item inside a `try-catch` block.
-4. Observe that accessing the "oops" string as an `int` causes a crash (TypeError).
+1.  Define an abstract class `Packet<T>`.
+2.  Define `StringPacket` extending `Packet<String>` and `IntPacket` extending `Packet<int>`.
+3.  Create a class `Processor` with a method `void process(covariant Packet<Object> p)`.
+    *   This method accepts any Packet because of `covariant`.
+4.  Inside `process`, use `if (p is StringPacket)` to print string content.
+5.  Use `if (p is IntPacket)` to print the number squared.
+6.  Create a list `List<Packet<Object>>` containing one of each packet.
+7.  Iterate and pass them to `process`.
 
 **Expected Output:**
 ```
-1
-2
-Error: type 'String' is not a subtype of type 'int' in type cast
+Processing String: Hello
+Processing Int: 100
 ```
 
 ---
@@ -226,22 +229,50 @@ void main() {
 }
 ```
 
-### Solution 5: Runtime Failure Safety
+### Solution 5: Sound Type System Validator
 
 ```dart
-void main() {
-  List<dynamic> mixed = [1, 2, "oops", 4];
-  
-  // cast() creates a view that checks types only when accessed
-  List<int> numbers = mixed.cast<int>();
-  
-  print('Iterating...');
-  try {
-    for (var n in numbers) {
-      print(n);
+abstract class Packet<T> {
+  final T content;
+  Packet(this.content);
+}
+
+class StringPacket extends Packet<String> {
+  StringPacket(super.content);
+}
+
+class IntPacket extends Packet<int> {
+  IntPacket(super.content);
+}
+
+class Processor {
+  // Accepts any packet holding an Object (basically any packet)
+  // strict typing usually prevents Packet<String> -> Packet<Object>
+  // but covariant allows runtime check flexibility here if needed.
+  // Actually, Packet<String> IS A Packet<Object> in Dart if T is covariant?
+  // In Dart generics are covariant by default.
+  // We use `covariant` keyword to be explicit on method overrides usually,
+  // but here we just accept Packet<Object> and rely on generic covariance.
+  void process(Packet<Object> p) {
+    if (p is StringPacket) {
+      print('Processing String: ${p.content}');
+    } else if (p is IntPacket) {
+      print('Processing Int: ${p.content * p.content}');
     }
-  } catch (e) {
-    print('Error: $e');
+  }
+}
+
+void main() {
+  var proc = Processor();
+  
+  // Dart generics are covariant: List<StringPacket> is a List<Packet<Object>>
+  List<Packet<Object>> packets = [
+    StringPacket('Hello'),
+    IntPacket(10),
+  ];
+  
+  for (var p in packets) {
+    proc.process(p);
   }
 }
 ```

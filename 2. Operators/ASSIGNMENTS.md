@@ -83,24 +83,27 @@ Request(url: https://api.example.com, method: GET, headers: {Authorization: Bear
 
 ---
 
-## Assignment 5: Bitwise Permissions (Advanced)
+## Assignment 5: Custom Encryption System (Expert)
 
 **Objective:**
-Use Bitwise operators (`|`, `&`, `<<`) to manage permission flags.
-*(الهدف: استخدام المعاملات الثنائية `|`، `&`، `<<` لإدارة أعلام الصلاحيات.)*
+Use Bitwise XOR (`^`) and shifting (`<<`, `>>`) to create a symmetric encryption algorithm.
+*(الهدف: استخدام XOR الثنائي (`^`) والإزاحة (`<<`، `>>`) لإنشاء خوارزمية تشفير متماثلة.)*
 
 **Instructions:**
-1. Define constants for permissions using bit shifts: `READ = 1` (001), `WRITE = 2` (010), `EXECUTE = 4` (100).
-2. Create a variable `userPerms` and assign it `READ | WRITE` (Binary 011 = 3).
-3. Check if `userPerms` has `WRITE` permission using `&` (i.e., `(userPerms & WRITE) != 0`).
-4. Toggle `WRITE` permission off using XOR `^` or complex logic, then check again. (Simplest: just check the first part).
-5. Print "Has Write: true" or false.
+1.  Define an integer `key` (e.g., `12345`).
+2.  Create a function `encrypt(String text, int key)`.
+    *   Iterate through each character code unit.
+    *   XOR the character code with the `key`.
+    *   (Optional) Apply a bitwise shift for complexity.
+    *   Return the list of encrypted integers.
+3.  Create a function `decrypt(List<int> encrypted, int key)` that reverses the logic.
+4.  In `main`, encrypt the string "Hello Dart" and then decrypt it back to verify.
 
 **Expected Output:**
 ```
-User Permissions: 3
-Has Write Access: true
-Has Execute Access: false
+Original: Hello Dart
+Encrypted: [7221, 10121, ...] (Example values)
+Decrypted: Hello Dart
 ```
 
 ---
@@ -184,23 +187,37 @@ void main() {
 }
 ```
 
-### Solution 5: Bitwise Permissions
+### Solution 5: Custom Encryption System
 
 ```dart
+List<int> encrypt(String text, int key) {
+  List<int> encrypted = [];
+  for (int charCode in text.codeUnits) {
+    // XOR with key
+    encrypted.add(charCode ^ key);
+  }
+  return encrypted;
+}
+
+String decrypt(List<int> encrypted, int key) {
+  List<int> decryptedCodes = [];
+  for (int code in encrypted) {
+    // XOR again reverses the operation
+    decryptedCodes.add(code ^ key);
+  }
+  return String.fromCharCodes(decryptedCodes);
+}
+
 void main() {
-  const int READ = 1;      // 001
-  const int WRITE = 2;     // 010
-  const int EXECUTE = 4;   // 100
+  int key = 987654321;
+  String original = "Hello Dart";
   
-  // Grant READ and WRITE
-  int userPerms = READ | WRITE; // 011 = 3
+  print('Original: $original');
   
-  print('User Permissions: $userPerms');
+  List<int> encryptedData = encrypt(original, key);
+  print('Encrypted: $encryptedData');
   
-  bool hasWrite = (userPerms & WRITE) == WRITE; // or != 0
-  print('Has Write Access: $hasWrite');
-  
-  bool hasExecute = (userPerms & EXECUTE) == EXECUTE;
-  print('Has Execute Access: $hasExecute');
+  String decryptedText = decrypt(encryptedData, key);
+  print('Decrypted: $decryptedText');
 }
 ```

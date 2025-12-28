@@ -81,20 +81,26 @@ Transformed: [1, 2, 3]
 
 ---
 
-## Assignment 5: Record Typedef (Advanced)
+## Assignment 5: Event System Architecture (Expert)
 
 **Objective:**
-Use modern typedef syntax to alias a Record structure.
-*(الهدف: استخدام صيغة typedef الحديثة لتسمية هيكل سجل.)*
+Design a type-safe event handler system using generic typedefs.
+*(الهدف: تصميم نظام معالجة أحداث آمن النوع باستخدام typedefs العامة.)*
 
 **Instructions:**
-1. Define a typedef `UserInfo` as `({String name, int id})`.
-2. Create a function `printUser(UserInfo user)` that prints "User [name] has ID [id]".
-3. Create a record matching that shape and pass it to the function.
+1.  Define a generic typedef `EventHandler<T>` as `void Function(T event)`.
+2.  Create a class `EventManager`.
+    *   It should allow registering handlers for specific event types. (Hint: `Map<Type, List<Function>>`).
+    *   `void subscribe<T>(EventHandler<T> handler)`.
+    *   `void publish<T>(T event)`.
+3.  Create two event classes: `LoginEvent` (String username) and `LogoutEvent`.
+4.  In `main`, subscribe to both.
+5.  Publish a login event and a logout event.
 
 **Expected Output:**
 ```
-User Alice has ID 101
+[Log] User Alice logged in.
+[Log] User logged out.
 ```
 
 ---
@@ -163,16 +169,47 @@ void main() {
 }
 ```
 
-### Solution 5: Record Typedef
+### Solution 5: Event System Architecture
 
 ```dart
-typedef UserInfo = ({String name, int id});
+typedef EventHandler<T> = void Function(T event);
 
-void printUser(UserInfo user) {
-  print('User ${user.name} has ID ${user.id}');
+class EventManager {
+  final Map<Type, List<Function>> _subscribers = {};
+
+  void subscribe<T>(EventHandler<T> handler) {
+    _subscribers.putIfAbsent(T, () => []).add(handler);
+  }
+
+  void publish<T>(T event) {
+    var handlers = _subscribers[T];
+    if (handlers != null) {
+      for (var handler in handlers) {
+        // Cast the generic function back to the specific type
+        (handler as EventHandler<T>)(event);
+      }
+    }
+  }
 }
 
+class LoginEvent {
+  final String username;
+  LoginEvent(this.username);
+}
+
+class LogoutEvent {}
+
 void main() {
-  printUser((name: 'Alice', id: 101));
+  var events = EventManager();
+
+  // Subscribe to Login
+  events.subscribe<LoginEvent>((e) => print('[Log] User ${e.username} logged in.'));
+
+  // Subscribe to Logout
+  events.subscribe<LogoutEvent>((e) => print('[Log] User logged out.'));
+
+  // Fire events
+  events.publish(LoginEvent('Alice'));
+  events.publish(LogoutEvent());
 }
 ```

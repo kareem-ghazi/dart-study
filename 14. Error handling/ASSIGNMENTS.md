@@ -78,24 +78,25 @@ Handled in main
 
 ---
 
-## Assignment 5: Custom Exception Hierarchy (Advanced)
+## Assignment 5: Robust Retry Mechanism (Expert)
 
 **Objective:**
-Create and handle a hierarchy of custom exceptions.
-*(الهدف: إنشاء ومعالجة تسلسل هرمي للاستثناءات المخصصة.)*
+Implement a reusable logic to retry a failing operation with a limit.
+*(الهدف: تنفيذ منطق قابل لإعادة الاستخدام لإعادة محاولة عملية فاشلة بحد أقصى.)*
 
 **Instructions:**
-1. Create a base class `NetworkException` implements `Exception`.
-2. Create a subclass `TimeoutException` extends `NetworkException`.
-3. Create a function `fetchData()` that throws `TimeoutException()`.
-4. In `main`, use `try-catch`.
-5. Add a `on TimeoutException` block to print "Request timed out".
-6. Add a `on NetworkException` block to print "General network error" (to show it catches subclasses if checked first, but here put it second).
-7. Add a generic `catch` block.
+1.  Write a function `Future<String> unstableApi()` that randomly throws an exception or returns "Success". (Use `Random().nextBool()`).
+2.  Write a generic function `Future<T> retry<T>(Future<T> Function() operation, int attempts)`.
+    *   Use a loop to try calling `operation()`.
+    *   If it succeeds, return the result.
+    *   If it fails, catch the error, print "Retrying...", and decrement attempts.
+    *   If attempts run out, rethrow the last exception.
+3.  In `main`, call `retry(() => unstableApi(), 3)` inside a try-catch.
 
-**Expected Output:**
+**Expected Output (Varies):**
 ```
-Request timed out
+Retrying...
+Success
 ```
 
 ---
@@ -191,25 +192,36 @@ void main() {
 }
 ```
 
-### Solution 5: Custom Exception Hierarchy
+### Solution 5: Robust Retry Mechanism
 
 ```dart
-class NetworkException implements Exception {}
-class TimeoutException extends NetworkException {}
+import 'dart:math';
 
-void fetchData() {
-  throw TimeoutException();
+Future<String> unstableApi() async {
+  if (Random().nextBool()) {
+    throw Exception("Network Flicker");
+  }
+  return "Success";
 }
 
-void main() {
+Future<T> retry<T>(Future<T> Function() operation, int attempts) async {
+  for (int i = 0; i < attempts; i++) {
+    try {
+      return await operation();
+    } catch (e) {
+      print("Attempt ${i + 1} failed: $e");
+      if (i == attempts - 1) rethrow; // Last attempt failed
+    }
+  }
+  throw Exception("Should not happen");
+}
+
+void main() async {
   try {
-    fetchData();
-  } on TimeoutException {
-    print("Request timed out");
-  } on NetworkException {
-    print("General network error");
+    String result = await retry(() => unstableApi(), 3);
+    print("Final Result: $result");
   } catch (e) {
-    print("Unknown error");
+    print("Operation failed after retries.");
   }
 }
 ```

@@ -100,24 +100,33 @@ Access Granted
 
 ---
 
-## Assignment 5: Deep Cast Pattern (Advanced)
+## Assignment 5: Advanced Data Validator (Expert)
 
 **Objective:**
-Validate and cast types deep inside a structure in one step.
-*(الهدف: التحقق من الأنواع وتحويلها داخل هيكل عميق في خطوة واحدة.)*
+Validate a complex nested JSON structure for a user profile using a single pattern.
+*(الهدف: التحقق من صحة هيكل JSON متداخل معقد لملف تعريف المستخدم باستخدام نمط واحد.)*
 
 **Instructions:**
-1. Create a heterogeneous list: `var data = [1, "2", 3]`.
-2. Write an `if-case` to check if the list contains:
-   * First element: `1`.
-   * Second element: Any String (bind to variable `s`).
-   * Third element: `3`.
-3. Inside the `if`, print `s` parsed as an int (`int.parse(s)`).
-4. Try changing the middle element to a number in the source to ensure the pattern fails safely.
+1.  Define a map `json` representing a user response:
+    ```dart
+    var json = {
+      'meta': {'version': 1},
+      'payload': [
+        {'type': 'user', 'info': {'name': 'Alice', 'active': true}},
+        {'type': 'user', 'info': {'name': 'Bob', 'active': false}}
+      ]
+    };
+    ```
+2.  Use a `switch` or `if-case` pattern to validate that:
+    *   `meta` has `version: 1`.
+    *   `payload` is a list.
+    *   The first item in payload has `type: 'user'` and an `active` user (`active: true`).
+3.  Bind the user's name to a variable `name` and print "Found active user: [name]".
+4.  Print "Invalid data" otherwise.
 
 **Expected Output:**
 ```
-Parsed middle element: 2
+Found active user: Alice
 ```
 
 ---
@@ -227,17 +236,31 @@ void main() {
 }
 ```
 
-### Solution 5: Deep Cast Pattern
+### Solution 5: Advanced Data Validator
 
 ```dart
 void main() {
-  var data = [1, "2", 3];
-  
-  // Checks structure AND type (String) of 2nd element
-  if (data case [1, String s, 3]) {
-    print('Parsed middle element: ${int.parse(s)}');
-  } else {
-    print('Pattern mismatch');
+  var json = {
+    'meta': {'version': 1},
+    'payload': [
+      {'type': 'user', 'info': {'name': 'Alice', 'active': true}},
+      {'type': 'user', 'info': {'name': 'Bob', 'active': false}}
+    ]
+  };
+
+  // Complex single-pattern validation
+  switch (json) {
+    case {
+        'meta': {'version': 1},
+        'payload': [
+          {'type': 'user', 'info': {'name': String name, 'active': true}},
+          ... // Allow other items in payload
+        ]
+      }:
+      print('Found active user: $name');
+      
+    default:
+      print('Invalid data');
   }
 }
 ```

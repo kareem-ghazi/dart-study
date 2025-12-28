@@ -89,22 +89,32 @@ Student: Bob, Average: 68.3...
 
 ---
 
-## Assignment 5: Functional Methods (Fold & Reduce) (Advanced)
+## Assignment 5: Data Analytics Engine (Expert)
 
 **Objective:**
-Use higher-order functions `fold` and `reduce` for aggregation.
-*(الهدف: استخدام الدوال عالية المستوى `fold` و `reduce` للتجميع.)*
+Perform complex data transformation and aggregation on a List of Maps/Records.
+*(الهدف: إجراء تحويل وتجميع معقد للبيانات على قائمة من الخرائط/السجلات.)*
 
 **Instructions:**
-1. Create a list of item prices: `[10.0, 20.0, 5.0, 30.0]`.
-2. Use `.fold(0, ...)` to calculate the total sum.
-3. Use `.reduce(...)` to find the highest price (max value).
-4. Print both results.
+1.  Define a list of transactions (Maps):
+    ```dart
+    var transactions = [
+      {'category': 'Food', 'amount': 10.0},
+      {'category': 'Tech', 'amount': 500.0},
+      {'category': 'Food', 'amount': 20.0},
+      {'category': 'Tech', 'amount': 100.0},
+      {'category': 'Clothes', 'amount': 50.0},
+    ];
+    ```
+2.  Use collection methods (`fold`, `map`, etc.) to:
+    *   Calculate the total spending.
+    *   Group transactions by category into a `Map<String, double>` (Category -> Total Amount).
+3.  Print the total and the breakdown by category.
 
 **Expected Output:**
 ```
-Total Sum: 65.0
-Highest Price: 30.0
+Total Spent: 680.0
+Breakdown: {Food: 30.0, Tech: 600.0, Clothes: 50.0}
 ```
 
 ---
@@ -182,21 +192,33 @@ void main() {
 }
 ```
 
-### Solution 5: Functional Methods (Fold & Reduce)
+### Solution 5: Data Analytics Engine
 
 ```dart
-import 'dart:math'; // For max function if preferred, but manual reduce is fine too
-
 void main() {
-  var prices = [10.0, 20.0, 5.0, 30.0];
+  var transactions = [
+    {'category': 'Food', 'amount': 10.0},
+    {'category': 'Tech', 'amount': 500.0},
+    {'category': 'Food', 'amount': 20.0},
+    {'category': 'Tech', 'amount': 100.0},
+    {'category': 'Clothes', 'amount': 50.0},
+  ];
+
+  // 1. Total Spending
+  double total = transactions.fold(0.0, (sum, item) => sum + (item['amount'] as double));
+
+  // 2. Group by Category
+  var breakdown = <String, double>{};
   
-  // Fold: starts with initial value (0.0)
-  double total = prices.fold(0.0, (prev, element) => prev + element);
-  
-  // Reduce: starts with first element
-  double highest = prices.reduce((curr, next) => curr > next ? curr : next);
-  
-  print('Total Sum: $total');
-  print('Highest Price: $highest');
+  for (var tx in transactions) {
+    String cat = tx['category'] as String;
+    double amt = tx['amount'] as double;
+    
+    // If key exists, add to it; otherwise set it
+    breakdown.update(cat, (value) => value + amt, ifAbsent: () => amt);
+  }
+
+  print('Total Spent: $total');
+  print('Breakdown: $breakdown');
 }
 ```

@@ -87,24 +87,22 @@ Done
 
 ---
 
-## Assignment 5: Async For-In (Advanced)
+## Assignment 5: Matrix Spiral Traversal (Expert)
 
 **Objective:**
-Iterate over an asynchronous stream of data using `await for`.
-*(الهدف: التكرار عبر تدفق بيانات غير متزامن باستخدام `await for`.)*
+Use complex loop logic (nested `while` or `for`) to traverse a 2D matrix in a spiral order.
+*(الهدف: استخدام منطق تكرار معقد (متداخل `while` أو `for`) لاجتياز مصفوفة ثنائية الأبعاد بترتيب حلزوني.)*
 
 **Instructions:**
-1. Create a function `Stream<int> countStream(int to) async*` that yields numbers from 1 to `to` with a 1-second delay between each.
-2. In `main` (marked `async`), use `await for (var n in countStream(3))` to loop through the stream.
-3. Print each number.
+1.  Define a 3x3 matrix (List of Lists): `[[1, 2, 3], [4, 5, 6], [7, 8, 9]]`.
+2.  Write an algorithm to print elements in spiral order: Right -> Down -> Left -> Up.
+    *   Maintain boundaries: `top`, `bottom`, `left`, `right`.
+    *   Use a `while` loop that runs as long as `left <= right` and `top <= bottom`.
+3.  Print the sequence.
 
 **Expected Output:**
 ```
-1
-(1 second delay)
-2
-(1 second delay)
-3
+1 2 3 6 9 8 7 4 5
 ```
 
 ---
@@ -190,23 +188,44 @@ void main() {
 }
 ```
 
-### Solution 5: Async For-In
+### Solution 5: Matrix Spiral Traversal
 
 ```dart
-import 'dart:async';
+void main() {
+  List<List<int>> matrix = [
+    [1, 2, 3],
+    [4, 5, 6],
+    [7, 8, 9]
+  ];
+  
+  List<int> result = [];
+  int top = 0;
+  int bottom = matrix.length - 1;
+  int left = 0;
+  int right = matrix[0].length - 1;
 
-Stream<int> countStream(int to) async* {
-  for (int i = 1; i <= to; i++) {
-    await Future.delayed(Duration(seconds: 1));
-    yield i;
-  }
-}
+  while (top <= bottom && left <= right) {
+    // 1. Right
+    for (int i = left; i <= right; i++) result.add(matrix[top][i]);
+    top++;
 
-void main() async {
-  print('Starting stream...');
-  await for (var n in countStream(3)) {
-    print(n);
+    // 2. Down
+    for (int i = top; i <= bottom; i++) result.add(matrix[i][right]);
+    right--;
+
+    // 3. Left
+    if (top <= bottom) {
+      for (int i = right; i >= left; i--) result.add(matrix[bottom][i]);
+      bottom--;
+    }
+
+    // 4. Up
+    if (left <= right) {
+      for (int i = bottom; i >= top; i--) result.add(matrix[i][left]);
+      left++;
+    }
   }
-  print('Stream finished');
+  
+  print(result.join(' '));
 }
 ```

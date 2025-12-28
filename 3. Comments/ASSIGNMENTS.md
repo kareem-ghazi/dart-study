@@ -91,23 +91,29 @@ Use comments to interact with the analysis server (`ignore` rules).
 
 ---
 
-## Assignment 5: Rich Documentation (Advanced)
+## Assignment 5: Documentation Generator (Expert)
 
 **Objective:**
-Master Markdown features within `///` documentation comments.
-*(الهدف: إتقان ميزات Markdown داخل تعليقات التوثيق `///`.)*
+Write a program that parses Dart code (as a string) and extracts documentation comments.
+*(الهدف: كتابة برنامج يحلل كود Dart (كسلسلة نصية) ويستخرج تعليقات التوثيق.)*
 
 **Instructions:**
-1. Create a function `void connectToDatabase()`.
-2. Write a documentation comment that includes:
-   - A **Bold** warning about network costs.
-   - A bulleted list of steps (e.g., 1. Open socket, 2. Handshake).
-   - A Markdown code block showing how to call the function.
-3. (Optional) Run `dart doc .` if you have the SDK installed to see the HTML output, or just hover over the function in your IDE.
+1.  Define a multi-line string variable `sourceCode` containing a simulated class with `///` comments.
+2.  Write a function `extractDocs(String code)` that:
+    *   Splits the code into lines.
+    *   Iterates through lines to find those starting with `///`.
+    *   Cleans up the `///` and whitespace.
+    *   Groups consecutive comment lines into a single "block".
+    *   Returns a `List<String>` where each string is a full documentation block.
+3.  In `main`, call the function and print the extracted docs nicely.
 
 **Expected Output:**
-(Code compiles, hover tooltip shows formatted text).
-
+```
+Found Documentation:
+[1] Represents a user in the system.
+[2] Logs the user out.
+    Clears the session token.
+```
 ---
 
 ## Solutions
@@ -183,27 +189,57 @@ void main() {
 }
 ```
 
-### Solution 5: Rich Documentation
+### Solution 5: Documentation Generator
 
 ```dart
-/// Connects to the remote database.
-///
-/// **Warning: This operation is expensive.**
-///
-/// Steps:
-/// * Open socket
-/// * Handshake
-/// * Authenticate
-///
-/// Example:
-/// ```dart
-/// connectToDatabase();
-/// ```
-void connectToDatabase() {
-  print("Connecting...");
+List<String> extractDocs(String code) {
+  List<String> docs = [];
+  StringBuffer currentBlock = StringBuffer();
+  
+  List<String> lines = code.split('\n');
+  
+  for (String line in lines) {
+    String trimmed = line.trim();
+    if (trimmed.startsWith('///')) {
+      // Remove '///' and leading space
+      String content = trimmed.substring(3).trim();
+      if (currentBlock.isNotEmpty) {
+        currentBlock.write('\n');
+      }
+      currentBlock.write(content);
+    } else {
+      // If we were building a block and hit non-comment code, save it
+      if (currentBlock.isNotEmpty) {
+        docs.add(currentBlock.toString());
+        currentBlock.clear();
+      }
+    }
+  }
+  // Flush remaining
+  if (currentBlock.isNotEmpty) {
+    docs.add(currentBlock.toString());
+  }
+  
+  return docs;
 }
 
 void main() {
-  connectToDatabase();
+  String sourceCode = """
+  /// Represents a user in the system.
+  class User {
+    String name;
+    
+    /// Logs the user out.
+    /// Clears the session token.
+    void logout() {}
+  }
+  """;
+
+  var extracted = extractDocs(sourceCode);
+  
+  print("Found Documentation:");
+  for (int i = 0; i < extracted.length; i++) {
+    print("[${i + 1}] ${extracted[i]}");
+  }
 }
 ```

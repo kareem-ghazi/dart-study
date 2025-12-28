@@ -87,23 +87,30 @@ Factorial of 5 is 120
 
 ---
 
-## Assignment 5: Shape Polymorphism (Advanced)
+## Assignment 5: Solar System Simulation (Expert)
 
 **Objective:**
-Practice classes, inheritance, method overriding, and lists.
-*(الهدف: التدرب على الفئات، الوراثة، تجاوز الدوال، والقوائم.)*
+Create a complex scenario combining classes, loops, state, and user interaction logic (simulated).
+*(الهدف: إنشاء سيناريو معقد يجمع بين الفئات، الحلقات، الحالة، ومنطق تفاعل المستخدم (محاكى).)*
 
 **Instructions:**
-1. Create an abstract class `Shape` with a method `double area()`.
-2. Create a class `Circle` extending `Shape` with a property `radius`. Override `area` (`pi * r * r`).
-3. Create a class `Rectangle` extending `Shape` with `width` and `height`. Override `area`.
-4. In `main`, create a `List<Shape>` containing one Circle and one Rectangle.
-5. Iterate through the list and print the area of each shape.
+1.  Create a class `Planet` with `name`, `distanceFromSun` (AU), and `isHabitable`.
+2.  Create a class `SolarSystem` that holds a list of planets.
+3.  Add a method `addPlanet` to the system.
+4.  Add a method `findHabitable()` that returns a list of habitable planets.
+5.  In `main`, simulate a "scan":
+    *   Create the system.
+    *   Add Earth, Mars, Venus, and Jupiter with realistic properties.
+    *   Print "Scanning system...".
+    *   Find and print the names of all habitable planets found.
+    *   **Challenge:** If no habitable planets are found, throw a custom exception `DoomException`.
 
 **Expected Output:**
 ```
-Area of Circle: 78.5...
-Area of Rectangle: 200.0
+Scanning system...
+Habitable planets found:
+- Earth
+- Mars
 ```
 
 ---
@@ -209,41 +216,58 @@ void main() {
 }
 ```
 
-### Solution 5: Shape Polymorphism
+### Solution 5: Solar System Simulation
 
 ```dart
-import 'dart:math';
-
-abstract class Shape {
-  double area();
+class DoomException implements Exception {
+  String toString() => "DoomException: No hope for humanity.";
 }
 
-class Circle extends Shape {
-  final double radius;
-  Circle(this.radius);
-  
-  @override
-  double area() => pi * radius * radius;
+class Planet {
+  String name;
+  double distanceFromSun;
+  bool isHabitable;
+
+  Planet(this.name, this.distanceFromSun, this.isHabitable);
 }
 
-class Rectangle extends Shape {
-  final double width;
-  final double height;
-  Rectangle(this.width, this.height);
-  
-  @override
-  double area() => width * height;
+class SolarSystem {
+  List<Planet> planets = [];
+
+  void addPlanet(Planet p) {
+    planets.add(p);
+  }
+
+  List<Planet> findHabitable() {
+    // filtering the list
+    return planets.where((p) => p.isHabitable).toList();
+  }
 }
 
 void main() {
-  List<Shape> shapes = [
-    Circle(5),
-    Rectangle(10, 20)
-  ];
+  var system = SolarSystem();
+  
+  // Adding planets (approximate data)
+  system.addPlanet(Planet('Mercury', 0.4, false));
+  system.addPlanet(Planet('Venus', 0.7, false));
+  system.addPlanet(Planet('Earth', 1.0, true));
+  system.addPlanet(Planet('Mars', 1.5, true)); // Optimistic!
+  system.addPlanet(Planet('Jupiter', 5.2, false));
 
-  for (var shape in shapes) {
-    // runtimeType prints the class name
-    print('Area of ${shape.runtimeType}: ${shape.area()}');
+  print('Scanning system...');
+  
+  try {
+    var habitable = system.findHabitable();
+    if (habitable.isEmpty) {
+      throw DoomException();
+    }
+    
+    print('Habitable planets found:');
+    for (var p in habitable) {
+      print('- ${p.name}');
+    }
+  } catch (e) {
+    print(e);
   }
 }
 ```

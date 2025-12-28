@@ -86,23 +86,29 @@ Sum Double: 4.0
 
 ---
 
-## Assignment 5: Generic Cache (Advanced)
+## Assignment 5: Generic Storage Service (Expert)
 
 **Objective:**
-Build a generic caching class using a Map.
-*(الهدف: بناء فئة تخزين مؤقت عامة باستخدام خريطة.)*
+Simulate a generic repository with CRUD operations (Create, Read, Update, Delete).
+*(الهدف: محاكاة مستودع عام مع عمليات CRUD (إنشاء، قراءة، تحديث، حذف).)*
 
 **Instructions:**
-1. Create a class `Cache<T>`.
-2. It should have a private map `Map<String, T> _storage`.
-3. Add method `void setItem(String key, T item)`.
-4. Add method `T? getItem(String key)`.
-5. In `main`, use `Cache<String>` to store a username and `Cache<int>` to store a score. Retrieve and print them.
+1.  Define an abstract class `Identifiable` with a field `String id`.
+2.  Create a class `User` extending `Identifiable` with a `name`.
+3.  Create a class `Product` extending `Identifiable` with a `price`.
+4.  Create a generic class `Storage<T extends Identifiable>`.
+    *   Use a `List<T>` to store items.
+    *   Add `save(T item)` (add or update if id exists).
+    *   Add `delete(String id)`.
+    *   Add `findById(String id)`.
+5.  In `main`, create a storage for Users and another for Products. Perform operations and print results.
 
 **Expected Output:**
 ```
-User: Admin
-Score: 100
+User Saved: Alice
+User Updated: Alice (New Name)
+Found Product: Laptop
+Deleted Product: Laptop
 ```
 
 ---
@@ -191,28 +197,73 @@ void main() {
 }
 ```
 
-### Solution 5: Generic Cache
+### Solution 5: Generic Storage Service
 
 ```dart
-class Cache<T> {
-  final Map<String, T> _storage = {};
+abstract class Identifiable {
+  String get id;
+}
 
-  void setItem(String key, T item) {
-    _storage[key] = item;
+class User extends Identifiable {
+  final String id;
+  String name;
+  User(this.id, this.name);
+  
+  @override
+  String toString() => 'User(name: $name)';
+}
+
+class Product extends Identifiable {
+  final String id;
+  double price;
+  Product(this.id, this.price);
+  
+  @override
+  String toString() => 'Product(price: $price)';
+}
+
+class Storage<T extends Identifiable> {
+  final List<T> _items = [];
+
+  void save(T item) {
+    int index = _items.indexWhere((e) => e.id == item.id);
+    if (index >= 0) {
+      _items[index] = item; // Update
+      print("Updated item: $item");
+    } else {
+      _items.add(item); // Create
+      print("Saved item: $item");
+    }
   }
 
-  T? getItem(String key) {
-    return _storage[key];
+  void delete(String id) {
+    _items.removeWhere((e) => e.id == id);
+    print("Deleted item with ID: $id");
+  }
+
+  T? findById(String id) {
+    try {
+      return _items.firstWhere((e) => e.id == id);
+    } catch (e) {
+      return null;
+    }
   }
 }
 
 void main() {
-  var userCache = Cache<String>();
-  userCache.setItem('current_user', 'Admin');
-  print('User: ${userCache.getItem('current_user')}');
-
-  var scoreCache = Cache<int>();
-  scoreCache.setItem('high_score', 100);
-  print('Score: ${scoreCache.getItem('high_score')}');
+  var userStore = Storage<User>();
+  var u1 = User('1', 'Alice');
+  userStore.save(u1);
+  
+  u1.name = 'Alice Wonderland';
+  userStore.save(u1); // Update
+  
+  var prodStore = Storage<Product>();
+  prodStore.save(Product('p1', 999.0));
+  
+  var found = prodStore.findById('p1');
+  print('Found Product: $found');
+  
+  prodStore.delete('p1');
 }
 ```
