@@ -65,6 +65,57 @@ A comprehensive **Personal Finance Tracker** project that combines everything le
 A **CLI E-Commerce System** integrating **Functions**, **Error Handling**, **Libraries**, and **Patterns**.
 *   **Concepts:** Modular Architecture, Custom Exceptions, Records for status, and Pattern Matching.
 
+---
+
+19. **[18. Classes](./18.%20Classes)**
+    *   Object blueprints, members, instance variables, and static members.
+20. **[19. Constructors](./19.%20Constructors)**
+    *   Generative, named, const, factory constructors, and initializer lists.
+21. **[20. Methods](./20.%20Methods)**
+    *   Instance methods, operators, getters, setters, and abstract methods.
+22. **[21. Extend a class](./21.%20Extend%20a%20class)**
+    *   Inheritance (`extends`), method overriding, and `super` usage.
+23. **[22. Mixins](./22.%20Mixins)**
+    *   Reusing code across hierarchies using `mixin`, `with`, and `on`.
+24. **[23. Enums](./23.%20Enums)**
+    *   Enumerated types, enhanced enums with fields/methods, and switch usage.
+25. **[24. Dot shorthands](./24.%20Dot%20shorthands)**
+    *   Concise syntax for enums, constructors, and static members.
+26. **[25. Extension methods](./25.%20Extension%20methods)**
+    *   Adding functionality to existing libraries without inheritance.
+27. **[26. Extension types](./26.%20Extension%20types)**
+    *   Zero-cost compile-time wrappers for type safety and interop.
+28. **[27. Callable objects](./27.%20Callable%20objects)**
+    *   Making class instances executable like functions using `call()`.
+
+---
+
+### 🏆 [Project Milestone 3](./Project%20Milestone%203)
+A **Smart Home Automation System** integrating **OOP**, **Mixins**, **Extension Types**, and **Callable Objects**.
+*   **Concepts:** Class Inheritance, Capability Mixins, Safe Extension Types, and Automation Logic.
+
+---
+
+29. **[28. Class modifiers](./28.%20Class%20modifiers)**
+    *   `abstract`, `base`, `interface`, `final`, `sealed`, and `mixin` modifiers.
+30. **[29. Concurrency in Dart](./29.%20Concurrency%20in%20Dart)**
+    *   The Event Loop, async architecture, and isolate overview.
+31. **[30. Asynchronous programming](./30.%20Asynchronous%20programming)**
+    *   `Future`, `async`/`await`, streams, and error handling.
+32. **[31. Isolates](./31.%20Isolates)**
+    *   Multi-threading, `Isolate.run`, `Isolate.spawn`, and ports.
+
+---
+
+### 🚀 [Final Capstone Project](./Final%20Capstone%20Project)
+A **Real-Time Stock Trading Simulation Engine** that mimics a financial exchange.
+*   **Objective:** Build a high-performance system with real-time price updates, trade execution, and background market analysis.
+*   **Concepts:** Integrates **EVERYTHING** (except Introduction, Type System, Pattern Types).
+    *   **Core:** Variables, Built-in Types, Records, Collections, Generics.
+    *   **OOP:** Classes, Inheritance, Mixins, Enums, Extension Types, Class Modifiers.
+    *   **Advanced:** Typedefs, Callable Objects, Extension Methods, Patterns (Destructuring).
+    *   **Concurrency:** Streams (Real-time prices), Async/Await (Network simulation), Isolates (Heavy analysis).
+
 ## 🚀 How to Use
 
 1.  **Read** the `NOTES.md` in a topic folder to grasp the concepts.

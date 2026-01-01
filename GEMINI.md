@@ -78,7 +78,7 @@ All tasks completed successfully.
 Date: Thursday, December 25, 2025
 
 ### Summary
-Created a new folder `Project Milestone 1` containing a comprehensive project task that consolidates concepts from folders 1 through 8.
+Created a new folder `Project Milestone 1` containing a comprehensive project task that consolidates concepts from folders 1 through 8.   
 
 - **Files Created:**
     - `PROJECT.md`: Instructions for a "Personal Finance Tracker".
@@ -119,5 +119,97 @@ Created a new folder `Project Milestone 2` containing an advanced "DartMart CLI"
     - `SOLUTION.md`: Full Dart implementation split into core library and main application logic.
 - **Updates:**
     - Updated `README.md` to link to the new milestone.
+
+All tasks completed successfully.
+
+## Task: Generate Files for Topics 18-23
+
+Date: Thursday, January 1, 2026
+
+### Summary
+Processed the newly added folders (18 through 23) to generate the required study files ('PAGE.md', 'NOTES.md', 'ASSIGNMENTS.md') based on their 'RAW.md' content.
+
+- **Folders Processed:**
+    - '18. Classes'
+    - '19. Constructors'
+    - '20. Methods'
+    - '21. Extend a class'
+    - '22. Mixins'
+    - '23. Enums'
+
+- **Updates:**
+    - Updated 'README.md' to include the new topics in the Table of Contents.
+    - Updated 'GEMINI.md' with this execution report.
+
+All tasks completed successfully.
+
+
+## Task: Generate Files for Topics 24-27
+
+Date: Thursday, January 1, 2026
+
+### Summary
+Processed the remaining new folders (24 through 27) to generate the required study files ('PAGE.md', 'NOTES.md', 'ASSIGNMENTS.md') based on their 'RAW.md' content.
+
+- **Folders Processed:**
+    - '24. Dot shorthands'
+    - '25. Extension methods'
+    - '26. Extension types'
+    - '27. Callable objects'
+
+- **Updates:**
+    - Updated 'README.md' to include the new topics in the Table of Contents.
+    - Updated 'GEMINI.md' with this execution report.
+
+All tasks completed successfully.
+
+
+## Task: Create Project Milestone 3
+
+Date: Thursday, January 1, 2026
+
+### Summary
+Created a new folder 'Project Milestone 3' containing a comprehensive 'Smart Home Automation System' project that consolidates concepts from classes, mixins, extensions, and more.
+
+- **Files Created:**
+    - 'PROJECT.md': Instructions for the 'Smart Home Automation System'.
+    - 'SOLUTION.md': Full Dart implementation.
+- **Updates:**
+    - Updated 'README.md' to link to the new milestone.
+
+All tasks completed successfully.
+
+## Task: Generate Files for Topics 28-31
+
+Date: Thursday, January 1, 2026
+
+### Summary
+Processed the newly added folders (28 through 31) to generate the required study files ('PAGE.md', 'NOTES.md', 'ASSIGNMENTS.md') based on their 'RAW.md' content.
+
+- **Folders Processed:**
+    - '28. Class modifiers'
+    - '29. Concurrency in Dart'
+    - '30. Asynchronous programming'
+    - '31. Isolates'
+
+- **Updates:**
+    - Updated 'README.md' to include the new topics in the Table of Contents and reordered milestones.
+    - Updated 'GEMINI.md' with this execution report.
+
+All tasks completed successfully.
+
+## Task: Create Final Capstone Project
+
+Date: Thursday, January 1, 2026
+
+### Summary
+Created a new folder 'Final Capstone Project' containing the ultimate challenge: a "Real-Time Stock Trading Simulation Engine".
+
+- **Files Created:**
+    - 'PROJECT.md': Instructions for the Stock Trading Engine, requiring integration of almost all studied topics (excluding 0, 9, 11).
+    - 'SOLUTION.md': A complete, runnable Dart implementation using Streams, Isolates, Sealed Classes, and Extension Types.
+- **Updates:**
+    - Updated 'README.md' to include the Final Capstone Project at the end.
+    - Updated 'GEMINI.md' with this execution report.
 
 All tasks completed successfully.

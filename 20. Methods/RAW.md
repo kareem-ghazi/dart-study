@@ -1,0 +1,152 @@
+Methods
+=======
+
+Learn about methods in Dart.
+
+more_vert
+
+*   copy Copy link
+*   [docs View source](https://github.com/dart-lang/site-www/blob/main/src/content/language/methods.md)
+*   [bug_report Report issue](https://github.com/dart-lang/site-www/issues/new?template=1_page_issue.yml&page-url=https://dart.dev/language/methods&page-source=https://github.com/dart-lang/site-www/blob/main/src/content/language/methods.md)
+
+Methods are functions that provide behavior for an object.
+
+Instance methods
+----------------
+
+[#](https://dart.dev/language/methods#instance-methods)
+
+Instance methods on objects can access instance variables and `this`. The `distanceTo()` method in the following sample is an example of an instance method:
+
+dart
+```
+import 'dart:math';
+​
+class Point {
+  final double x;
+  final double y;
+​
+  // Sets the x and y instance variables
+  // before the constructor body runs.
+  Point(this.x, this.y);
+​
+  double distanceTo(Point other) {
+    var dx = x - other.x;
+    var dy = y - other.y;
+    return sqrt(dx * dx + dy * dy);
+  }
+​
+}
+```
+content_copy
+
+Operators
+---------
+
+[#](https://dart.dev/language/methods#operators)
+
+Most operators are instance methods with special names. Dart allows you to define operators with the following names:
+
+|  |  |  |  |  |  |
+| --- | --- | --- | --- | --- | --- |
+| `<` | `>` | `<=` | `>=` | `==` | `~` |
+| `-` | `+` | `/` | `~/` | `*` | `%` |
+| `|` | `ˆ` | `&` | `<<` | `>>>` | `>>` |
+| `[]=` | `[]` |  |  |  |  |
+
+info Note
+
+You may have noticed that some [operators](https://dart.dev/language/operators), like `!=`, aren't in the list of names. These operators aren't instance methods. Their behavior is built in to Dart.
+
+To declare an operator, use the built-in identifier `operator` then the operator you are defining. The following example defines vector addition (`+`), subtraction (`-`), and equality (`==`):
+
+dart
+```
+class Vector {
+  final int x, y;
+​
+  Vector(this.x, this.y);
+​
+  Vector operator +(Vector v) => Vector(x + v.x, y + v.y);
+  Vector operator -(Vector v) => Vector(x - v.x, y - v.y);
+​
+  @override
+  bool operator ==(Object other) =>
+      other is Vector && x == other.x && y == other.y;
+​
+  @override
+  int get hashCode => Object.hash(x, y);
+}
+​
+void main() {
+  final v = Vector(2, 3);
+  final w = Vector(2, 2);
+​
+  assert(v + w == Vector(4, 5));
+  assert(v - w == Vector(0, 1));
+}
+```
+content_copy
+
+Getters and setters
+-------------------
+
+[#](https://dart.dev/language/methods#getters-and-setters)
+
+Getters and setters are special methods that provide read and write access to an object's properties. Recall that each instance variable has an implicit getter, plus a setter if appropriate. You can create additional properties by implementing getters and setters, using the `get` and `set` keywords:
+
+dart
+```
+/// A rectangle in a screen coordinate system,
+/// where the origin `(0, 0)` is in the top-left corner.
+class Rectangle {
+  double left, top, width, height;
+​
+  Rectangle(this.left, this.top, this.width, this.height);
+​
+  // Define two calculated properties: right and bottom.
+  double get right => left + width;
+  set right(double value) => left = value - width;
+  double get bottom => top + height;
+  set bottom(double value) => top = value - height;
+}
+​
+void main() {
+  var rect = Rectangle(3, 4, 20, 15);
+  assert(rect.left == 3);
+  rect.right = 12;
+  assert(rect.left == -8);
+}
+```
+content_copy
+
+With getters and setters, you can start with instance variables, later wrapping them with methods, all without changing client code.
+
+info Note
+
+Operators such as increment (`++`) work in the expected way, whether or not a getter is explicitly defined. To avoid any unexpected side effects, the operator calls the getter exactly once, saving its value in a temporary variable.
+
+Abstract methods
+----------------
+
+[#](https://dart.dev/language/methods#abstract-methods)
+
+Instance, getter, and setter methods can be abstract, defining an interface but leaving its implementation up to other classes. Abstract methods can only exist in [abstract classes](https://dart.dev/language/class-modifiers#abstract) or [mixins](https://dart.dev/language/mixins).
+
+To make a method abstract, use a semicolon (`;`) instead of a method body:
+
+dart
+```
+abstract class Doer {
+  // Define instance variables and methods...
+​
+  void doSomething(); // Define an abstract method.
+}
+​
+class EffectiveDoer extends Doer {
+  void doSomething() {
+    // Provide an implementation, so the method is not abstract here...
+  }
+}
+```
+content_copy

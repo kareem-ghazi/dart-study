@@ -1,0 +1,308 @@
+1.   [Language](https://dart.dev/language)
+2.   [Classes](https://dart.dev/language/classes)
+
+Summary of classes, class instances, and their members.
+
+Dart is an object-oriented language with classes and mixin-based inheritance. Every object is an instance of a class, and all classes except `Null` descend from [`Object`](https://api.dart.dev/dart-core/Object-class.html). _Mixin-based inheritance_ means that although every class (except for the [top class](https://dart.dev/null-safety/understanding-null-safety#top-and-bottom), `Object?`) has exactly one superclass, a class body can be reused in multiple class hierarchies. [Extension methods](https://dart.dev/language/extension-methods) are a way to add functionality to a class without changing the class or creating a subclass. [Class modifiers](https://dart.dev/language/class-modifiers) allow you to control how libraries can subtype a class.
+
+Using class members
+-------------------
+
+[#](https://dart.dev/language/classes#using-class-members)
+
+Objects have _members_ consisting of functions and data (_methods_ and _instance variables_, respectively). When you call a method, you _invoke_ it on an object: the method has access to that object's functions and data.
+
+Use a dot (`.`) to refer to an instance variable or method:
+
+dart
+
+```
+var p = Point(2, 2);
+​
+// Get the value of y.
+assert(p.y == 2);
+​
+// Invoke distanceTo() on p.
+double distance = p.distanceTo(Point(4, 4));
+```
+
+Use `?.` instead of `.` to avoid an exception when the leftmost operand is null:
+
+dart
+
+```
+// If p is non-null, set a variable equal to its y value.
+var a = p?.y;
+```
+
+Using constructors
+------------------
+
+[#](https://dart.dev/language/classes#using-constructors)
+
+You can create an object using a _constructor_. Constructor names can be either `ClassName` or `ClassName.identifier`. For example, the following code creates `Point` objects using the `Point()` and `Point.fromJson()` constructors:
+
+dart
+
+```
+var p1 = Point(2, 2);
+var p2 = Point.fromJson({'x': 1, 'y': 2});
+```
+
+The following code has the same effect, but uses the optional `new` keyword before the constructor name:
+
+dart
+
+```
+var p1 = new Point(2, 2);
+var p2 = new Point.fromJson({'x': 1, 'y': 2});
+```
+
+Some classes provide [constant constructors](https://dart.dev/language/constructors#constant-constructors). To create a compile-time constant using a constant constructor, put the `const` keyword before the constructor name:
+
+dart
+
+```
+var p = const ImmutablePoint(2, 2);
+```
+
+Constructing two identical compile-time constants results in a single, canonical instance:
+
+dart
+
+```
+var a = const ImmutablePoint(1, 1);
+var b = const ImmutablePoint(1, 1);
+​
+assert(identical(a, b)); // They are the same instance!
+```
+
+Within a _constant context_, you can omit the `const` before a constructor or literal. For example, look at this code, which creates a const map:
+
+dart
+
+```
+// Lots of const keywords here.
+const pointAndLine = const {
+  'point': const [const ImmutablePoint(0, 0)],
+  'line': const [const ImmutablePoint(1, 10), const ImmutablePoint(-2, 11)],
+};
+```
+
+You can omit all but the first use of the `const` keyword:
+
+dart
+
+```
+// Only one const, which establishes the constant context.
+const pointAndLine = {
+  'point': [ImmutablePoint(0, 0)],
+  'line': [ImmutablePoint(1, 10), ImmutablePoint(-2, 11)],
+};
+```
+
+If a constant constructor is outside of a constant context and is invoked without `const`, it creates a **non-constant object**:
+
+dart
+
+```
+var a = const ImmutablePoint(1, 1); // Creates a constant
+var b = ImmutablePoint(1, 1); // Does NOT create a constant
+​
+assert(!identical(a, b)); // NOT the same instance!
+```
+
+Getting an object's type
+------------------------
+
+[#](https://dart.dev/language/classes#getting-an-objects-type)
+
+To get an object's type at runtime, you can use the `Object` property `runtimeType`, which returns a [`Type`](https://api.dart.dev/dart-core/Type-class.html) object.
+
+dart
+
+```
+print('The type of a is ${a.runtimeType}');
+```
+
+Up to here, you've seen how to _use_ classes. The rest of this section shows how to _implement_ classes.
+
+Instance variables
+------------------
+
+[#](https://dart.dev/language/classes#instance-variables)
+
+Here's how you declare instance variables:
+
+dart
+
+```
+class Point {
+  double? x; // Declare instance variable x, initially null.
+  double? y; // Declare y, initially null.
+  double z = 0; // Declare z, initially 0.
+}
+```
+
+An uninitialized instance variable declared with a [nullable type](https://dart.dev/null-safety/understanding-null-safety#using-nullable-types) has the value `null`. Non-nullable instance variables [must be initialized](https://dart.dev/null-safety/understanding-null-safety#uninitialized-variables) at declaration.
+
+All instance variables generate an implicit _getter_ method. Non-final instance variables and `late final` instance variables without initializers also generate an implicit _setter_ method. For details, check out [Getters and setters](https://dart.dev/language/methods#getters-and-setters).
+
+dart
+
+```
+class Point {
+  double? x; // Declare instance variable x, initially null.
+  double? y; // Declare y, initially null.
+}
+​
+void main() {
+  var point = Point();
+  point.x = 4; // Use the setter method for x.
+  assert(point.x == 4); // Use the getter method for x.
+  assert(point.y == null); // Values default to null.
+}
+```
+
+Initializing a non-`late` instance variable where it's declared sets the value when the instance is created, before the constructor and its initializer list execute. As a result, the initializing expression (after the `=`) of a non-`late` instance variable can't access `this`.
+
+dart
+
+```
+double initialX = 1.5;
+​
+class Point {
+  // OK, can access declarations that do not depend on `this`:
+  double? x = initialX;
+​
+  // ERROR, can't access `this` in non-`late` initializer:
+  double? y = this.x;
+​
+  // OK, can access `this` in `late` initializer:
+  late double? z = this.x;
+​
+  // OK, `this.x` and `this.y` are parameter declarations, not expressions:
+  Point(this.x, this.y);
+}
+```
+
+Instance variables can be `final`, in which case they must be set exactly once. Initialize `final`, non-`late` instance variables at declaration, using a constructor parameter, or using a constructor's [initializer list](https://dart.dev/language/constructors#use-an-initializer-list):
+
+dart
+
+```
+class ProfileMark {
+  final String name;
+  final DateTime start = DateTime.now();
+​
+  ProfileMark(this.name);
+  ProfileMark.unnamed() : name = '';
+}
+```
+
+If you need to assign the value of a `final` instance variable after the constructor body starts, you can use one of the following:
+
+*   Use a [factory constructor](https://dart.dev/language/constructors#factory-constructors).
+*    Use `late final`, but [_be careful:_](https://dart.dev/effective-dart/design#avoid-public-late-final-fields-without-initializers) a `late final` without an initializer adds a setter to the API. 
+
+Implicit interfaces
+-------------------
+
+[#](https://dart.dev/language/classes#implicit-interfaces)
+
+Every class implicitly defines an interface containing all the instance members of the class and of any interfaces it implements. If you want to create a class A that supports class B's API without inheriting B's implementation, class A should implement the B interface.
+
+A class implements one or more interfaces by declaring them in an `implements` clause and then providing the APIs required by the interfaces. For example:
+
+dart
+
+```
+// A person. The implicit interface contains greet().
+class Person {
+  // In the interface, but visible only in this library.
+  final String _name;
+​
+  // Not in the interface, since this is a constructor.
+  Person(this._name);
+​
+  // In the interface.
+  String greet(String who) => 'Hello, $who. I am $_name.';
+}
+​
+// An implementation of the Person interface.
+class Impostor implements Person {
+  String get _name => '';
+​
+  String greet(String who) => 'Hi $who. Do you know who I am?';
+}
+​
+String greetBob(Person person) => person.greet('Bob');
+​
+void main() {
+  print(greetBob(Person('Kathy')));
+  print(greetBob(Impostor()));
+}
+```
+
+Here's an example of specifying that a class implements multiple interfaces:
+
+dart
+
+```
+class Point implements Comparable, Location {
+  ...
+}
+```
+
+Class variables and methods
+---------------------------
+
+[#](https://dart.dev/language/classes#class-variables-and-methods)
+
+Use the `static` keyword to implement class-wide variables and methods.
+
+Static variables (class variables) are useful for class-wide state and constants:
+
+dart
+
+```
+class Queue {
+  static const initialCapacity = 16;
+  // ···
+}
+​
+void main() {
+  assert(Queue.initialCapacity == 16);
+}
+```
+
+Static variables aren't initialized until they're used.
+
+Static methods (class methods) don't operate on an instance, and thus don't have access to `this`. They do, however, have access to static variables. As the following example shows, you invoke static methods directly on a class:
+
+dart
+
+```
+import 'dart:math';
+​
+class Point {
+  double x, y;
+  Point(this.x, this.y);
+​
+  static double distanceBetween(Point a, Point b) {
+    var dx = a.x - b.x;
+    var dy = a.y - b.y;
+    return sqrt(dx * dx + dy * dy);
+  }
+}
+​
+void main() {
+  var a = Point(2, 2);
+  var b = Point(4, 4);
+  var distance = Point.distanceBetween(a, b);
+  assert(2.8 < distance && distance < 2.9);
+  print(distance);
+}
+```
+
+You can use static methods as compile-time constants. For example, you can pass a static method as a parameter to a constant constructor.
